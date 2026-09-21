@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMMERSE — Immersive Media Design @ UMD</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <!-- Splide.js (carousel for Executive Board + mascot gallery) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="#top" class="navbar__logo">
+        <img src="assets/immerse/immerse_colored.png" alt="IMMERSE — Where Art Meets Tech" class="logo-img">
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#events">Events</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="navbar__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <h1>IMMERSE</h1>
+        <p class="hero__tagline">
+          IMMERSE is where students explore, learn, and connect in immersive media through social, academic, and career
+          driven events. Whether you're here to build skills, meet people, or break into art and technology, IMMERSE
+          helps you get there.
+        </p>
+        <a href="https://discord.gg/gjc4BwuTC" class="btn btn--primary">Join the Discord</a>
+      </div>
+      <div class="hero__visual">
+        <img src="assets/logo_colored/IMMERSE Logo Fixed PNG.png" alt="IMMERSE — Where Art Meets Tech" class="hero__logo">
+        <!-- Mascot carousel — commented out for now. Uncomment this block
+             (and nothing else) to bring it back; script.js already guards
+             against it being missing, so the exec board carousel below is
+             unaffected either way.
+        <div class="splide" id="mascot-splide" aria-label="IMMERSE mascot gallery">
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide">
+                <div class="mascot-frame"><img src="assets/mascot-1.png" alt="IMMERSE mascot"></div>
+              </li>
+              <li class="splide__slide">
+                <div class="mascot-frame"><img src="assets/mascot-2.png" alt="IMMERSE mascot"></div>
+              </li>
+              <li class="splide__slide">
+                <div class="mascot-frame"><img src="assets/mascot-3.png" alt="IMMERSE mascot"></div>
+              </li>
+              <li class="splide__slide">
+                <div class="mascot-frame"><img src="assets/mascot-4.png" alt="IMMERSE mascot"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        -->
+      </div>
+    </div>
+  </section>
+  <!-- ============ ACCOLADES & SUPPORT ============ -->
+  <section class="accolades">
+    <p>Endorsed by the Immersive Media Design Department at the University of Maryland, College Park.</p>
+  </section>
+  <!-- ============ ABOUT ============ -->
+  <section class="about" id="about">
+    <div class="about__inner">
+      <img src="assets/logo_colored/IMMERSE Logo Fixed PNG.png" alt="IMMERSE — Where Art Meets Tech"
+        class="about__mark">
+      <div class="about__copy">
+        <h2>About IMMERSE</h2>
+        <p>
+          IMMERSE (Immersive Media Makers Exploring Reality, Simulation, and Experiences) is a student-led organization
+          affiliated with the Immersive Media Design department at the University of Maryland. The club serves as a
+          multidisciplinary hub for students to engage with immersive media through social, academic, and career-driven
+          programs, including skill-based workshops, research panels, industry collaborations, mentorship programs, and
+          design challenges. <br><br>
+          IMMERSE supports creative exploration, academic growth, and professional development in immersive technologies
+          while fostering a strong, inclusive community at the intersection of art and technology.
+        </p>
+        <p class="about__endorsement">
+          We're proud to be endorsed by the Immersive Media Design department at UMD.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- ============ EXECUTIVE BOARD (Splide carousel) ============ -->
+  <section class="exec-board">
+    <h2>Executive Board</h2>
+    <div class="splide" id="exec-board-splide" aria-label="Executive Board Members">
+      <div class="splide__track">
+        <ul class="splide__list">
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <div class="exec-card">
+              <div class="exec-card__photo"></div>
+              <p class="exec-card__name">Full Name</p>
+              <p class="exec-card__position">Position Name</p>
+            </div>
+          </li>
+          <!-- Add more <li class="splide__slide"> entries as your board grows -->
+        </ul>
+      </div>
+    </div>
+  </section>
+  <!-- ============ EVENT TYPES ============ -->
+  <section class="event-types" id="events">
+    <h2>Pillars &amp; event types</h2>
+    <p class="event-types__intro">Everything we run ties back to one of four pillars.</p>
+
+    <div class="event-list">
+      <div class="event-list__pair">
+        <div class="pillar">
+          <h3>Explore <span class="pillar__subtitle">Academic Exploration</span></h3>
+          <ul>
+            <li>Research panels</li>
+            <li>Guest lectures from faculty</li>
+            <li>Lab showcases / demos</li>
+            <li>Discussions on emerging technologies</li>
+          </ul>
+        </div>
+        <div class="pillar">
+          <h3>Advance <span class="pillar__subtitle">Career Development</span></h3>
+          <ul>
+            <li>Industry talks</li>
+            <li>Alumni panels</li>
+            <li>Resume workshops</li>
+            <li>Mentorship programs</li>
+          </ul>
+        </div>
+      </div>
+      <div class="event-list__pair">
+        <div class="pillar">
+          <h3>Create <span class="pillar__subtitle">Creative Practice &amp; Skill Enhancement</span></h3>
+          <ul>
+            <li>Unity workshops</li>
+            <li>Blender workshops</li>
+            <li>Creative coding sessions</li>
+            <li>Design challenges / hackathons</li>
+            <li>Collaborative projects</li>
+          </ul>
+        </div>
+        <div class="pillar">
+          <h3>Connect <span class="pillar__subtitle">Community Building &amp; Well-Being</span></h3>
+          <ul>
+            <li>Welcome socials</li>
+            <li>Game nights / casual hangouts</li>
+            <li>Mental health / wellness events</li>
+            <li>Cross-discipline / club / major events</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ CALENDAR ============ -->
+  <section class="calendar">
+    <div class="calendar__header">
+      <h2>Add our Google Calendar</h2>
+      <p>
+        Stay up to date with all our upcoming events. We partner to host
+        workshops and socials once a month, and professional events once
+        a semester.
+      </p>
+      <a href="https://calendar.google.com/calendar/render?cid=c_b4fb6e3e45ee03be749c026cfe70262e74b34394fc7dcd6b22368919a9de9f08%40group.calendar.google.com"
+        class="btn btn--outline" target="_blank" rel="noopener">Add to Google Calendar</a>
+    </div>
+    <div class="calendar__embed">
+      <iframe
+        src="https://calendar.google.com/calendar/embed?src=c_b4fb6e3e45ee03be749c026cfe70262e74b34394fc7dcd6b22368919a9de9f08%40group.calendar.google.com&ctz=America%2FNew_York"
+        title="IMMERSE events calendar" width="100%" height="100%" frameborder="0" scrolling="no">
+      </iframe>
+    </div>
+  </section>
+  <!-- ============ CONTACT / FOOTER ============ -->
+  <footer class="contact" id="contact">
+    <div class="contact__inner">
+      <div class="contact__copy">
+        <h2>Contact</h2>
+        <p>Sign up for our newsletter and follow along on socials.</p>
+        <ul class="contact__links">
+          <li><a href="https://www.instagram.com/immerse.umd/">Instagram</a></li>
+          <li><a href="https://discord.gg/gjc4BwuTC">Discord</a></li>
+          <li><a href="https://terplink.umd.edu/organization/immerse">TerpLink</a></li>
+          <li><a href="mailto:executive@umd-immerse.com">Email</a></li>
+        </ul>
+      </div>
+      <form id="newsletter" class="newsletter-form">
+        <label for="newsletter-email">Email address</label>
+        <div class="newsletter-form__row">
+          <input id="newsletter-email" type="email" placeholder="you@umd.edu" required>
+          <button type="submit" class="btn btn--primary">Sign up</button>
+        </div>
+      </form>
+    </div>
+    <p class="contact__copyright">© 2026 IMMERSE at UMD</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

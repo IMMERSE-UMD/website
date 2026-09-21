@@ -1,0 +1,596 @@
+/* =========================================================
+   IMMERSE — Design tokens (matched to the finalized primary logo)
+
+   Deliberately restrained: no gradients-on-everything, no drop
+   shadows, no pill buttons, no floating decorative blobs. Color
+   and type carry the personality; layout stays plain.
+
+   Palette (sampled from the logo):
+     --ink          #221B45  body text / outlines
+     --paper        #FAF9F6  page background
+     --panel        #F1EEF9  section background (soft violet tint)
+     --dark         #17123A  dark section background (exec board)
+     --dark-panel   #241E52  photo placeholder fill on dark bg
+     --purple       #9C63A8  logo dot / "i"
+     --blue         #5E6BAE  logo R/S/e
+     --indigo       #453E8C  logo M/R fill
+     --gold         #FFD23F  logo E, left half
+     --orange       #F4901E  logo E, right half
+
+   Type:
+     Display: 'Fredoka'   Body: 'Quicksand'
+   ========================================================= */
+
+:root {
+  --ink: #221b45;
+  --paper: #faf9f6;
+  --panel: #f1eef9;
+  --dark: #17123a;
+  --dark-panel: #241e52;
+  --purple: #9c63a8;
+  --blue: #5e6bae;
+  --indigo: #453e8c;
+  --gold: #ffd23f;
+  --orange: #f4901e;
+  --white: #ffffff;
+  --border: rgba(34, 27, 69, 0.14);
+
+  --font-display: 'Fredoka', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+
+  --radius: 10px;
+  --max-width: 1140px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0 0 0.5em;
+  line-height: 1.15;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* =========================================================
+   BUTTONS — plain, rounded rectangle, one flat state change
+   on hover. No shadow, no pill shape.
+   ========================================================= */
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 700;
+  padding: 0.75em 1.5em;
+  border-radius: var(--radius);
+  border: 2px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.btn--primary {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.btn--primary:hover {
+  background: var(--indigo);
+}
+
+.btn--outline {
+  background: transparent;
+  border-color: currentColor;
+}
+
+.btn--outline:hover {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--paper);
+  border-bottom: 1px solid var(--border);
+}
+
+.navbar__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 32px;
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+.navbar__links a:hover {
+  color: var(--indigo);
+}
+
+.navbar__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar__toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--ink);
+}
+
+/* =========================================================
+   HERO — left-aligned, direct copy, single visual (no stock
+   dashboard mockups, no floating decoration).
+   ========================================================= */
+.hero {
+  background: var(--panel);
+}
+
+.hero__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 72px 24px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 6vw, 4rem);
+  letter-spacing: -0.01em;
+}
+
+.hero__tagline {
+  font-size: 1.1rem;
+  max-width: 46ch;
+}
+
+.hero__visual {
+  display: flex;
+  justify-content: center;
+}
+
+#mascot-splide {
+  width: 280px;
+  max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.mascot-frame {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: var(--indigo);
+  border: 2px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.mascot-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#mascot-splide .splide__arrow {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  opacity: 1;
+}
+
+#mascot-splide .splide__arrow svg {
+  fill: var(--ink);
+}
+
+#mascot-splide .splide__pagination__page {
+  background: transparent;
+  border: 2px solid var(--ink);
+  opacity: 1;
+}
+
+#mascot-splide .splide__pagination__page.is-active {
+  background: var(--ink);
+}
+
+/* =========================================================
+   ACCOLADES — one line, left-aligned, no icon/label.
+   ========================================================= */
+.accolades {
+  background: var(--paper);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 24px;
+}
+
+.accolades p {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  font-size: 0.95rem;
+  color: rgba(34, 27, 69, 0.75);
+}
+
+/* =========================================================
+   ABOUT — logo sits beside the copy, not stacked above it.
+   ========================================================= */
+.about {
+  background: var(--paper);
+  padding: 72px 24px;
+}
+
+.about__inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.about__mark {
+  width: 100%;
+  height: auto;
+}
+
+.about__endorsement {
+  font-size: 0.95rem;
+  color: rgba(34, 27, 69, 0.7);
+}
+
+/* =========================================================
+   EXECUTIVE BOARD — Splide carousel, flat cards
+   ========================================================= */
+.exec-board {
+  background: var(--dark);
+  padding: 72px 24px;
+}
+
+.exec-board h2 {
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.exec-board .splide {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.exec-card {
+  text-align: center;
+  padding: 4px;
+}
+
+.exec-card__photo {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius);
+  background: var(--dark-panel);
+  margin-bottom: 12px;
+  /* Replace with member headshot: background-image / <img> */
+}
+
+.exec-card__name {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.exec-card__position {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.exec-board .splide__arrow {
+  background: var(--dark-panel);
+  border: none;
+}
+
+.exec-board .splide__arrow svg {
+  fill: var(--white);
+}
+
+.exec-board .splide__pagination__page.is-active {
+  background: var(--gold);
+}
+
+/* =========================================================
+   EVENT TYPES — pillars + the event types each one runs.
+   Same flat row/rule pattern as the rest of the site: no
+   icon-in-a-box cards, just typography and a divider.
+   ========================================================= */
+.event-types {
+  background: var(--paper);
+  padding: 72px 24px;
+}
+
+.event-types h2 {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.event-types__intro {
+  text-align: center;
+  color: rgba(34, 27, 69, 0.7);
+  margin-bottom: 40px;
+}
+
+.event-list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.event-list__pair {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 56px;
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+}
+
+.event-list__pair:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.pillar h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  margin: 0 0 6px;
+}
+
+.pillar__subtitle {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: rgba(34, 27, 69, 0.6);
+  margin-top: 2px;
+  margin-bottom: 14px;
+}
+
+.pillar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.pillar li {
+  padding-left: 16px;
+  position: relative;
+  color: rgba(34, 27, 69, 0.8);
+}
+
+.pillar li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  background: var(--indigo);
+}
+
+/* =========================================================
+   CALENDAR — stacked, not mirrored with Hero's split layout.
+   Copy on top, full-width embed below.
+   ========================================================= */
+.calendar {
+  background: var(--panel);
+  padding: 72px 24px;
+}
+
+.calendar__header {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.calendar__header p {
+  max-width: 52ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.calendar__embed {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  height: 480px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--white);
+}
+
+.calendar__embed iframe {
+  display: block;
+}
+
+/* =========================================================
+   CONTACT / FOOTER
+   ========================================================= */
+.contact {
+  background: var(--paper);
+  border-top: 1px solid var(--border);
+  padding: 64px 24px 32px;
+}
+
+.contact__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.contact__links {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.contact__links a {
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+}
+
+.contact__links a:hover {
+  border-bottom-color: currentColor;
+}
+
+.newsletter-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.newsletter-form__row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.newsletter-form input {
+  flex: 1;
+  min-width: 220px;
+  padding: 0.7em 1em;
+  border-radius: var(--radius);
+  border: 2px solid var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+.newsletter-form input:focus {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+}
+
+.contact__copyright {
+  text-align: center;
+  color: rgba(34, 27, 69, 0.5);
+  font-size: 0.85rem;
+  margin: 48px 0 0;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 860px) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__visual {
+    order: -1;
+  }
+
+  .about__inner {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .about__mark {
+    width: 140px;
+  }
+
+  .event-list__pair {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .pillar {
+    padding: 20px 0;
+  }
+
+  .pillar+.pillar {
+    border-top: 1px solid var(--border);
+  }
+
+  .contact__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar__links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    padding: 16px 24px;
+    display: none;
+    gap: 16px;
+  }
+
+  .navbar__links.is-open {
+    display: flex;
+  }
+
+  .navbar__toggle {
+    display: flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
