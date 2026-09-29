@@ -201,18 +201,52 @@ img { max-width: 100%; display: block; }
 }
 
 /* =========================================================
-   ABOUT — logo sits beside the copy, not stacked above it.
+   ABOUT — two event-recap galleries sit beside the copy.
+
+   Layout stages:
+   - Desktop (>900px): galleries side by side, forming one
+     column next to the text.
+   - Medium (<=900px): that gallery pair moves above the text,
+     but the two galleries stay side by side with each other.
+   - Narrow (<=520px): the pair itself stacks, one gallery
+     above the other.
    ========================================================= */
 .about { background: var(--paper); padding: 72px 24px; }
 .about__inner {
-  max-width: 860px;
+  max-width: 1140px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 40px;
+  grid-template-columns: 520px 1fr;
+  gap: 48px;
   align-items: center;
 }
-.about__mark { width: 100%; height: auto; }
+
+.about__galleries { display: flex; gap: 16px; }
+.about__gallery { flex: 1 1 0; min-width: 0; }
+
+.about__gallery .splide {
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--panel);
+}
+.about__gallery .splide__track,
+.about__gallery .splide__list,
+.about__gallery .splide__slide { height: 100%; }
+.about__gallery img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about__gallery .splide__arrow {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  opacity: 1;
+}
+.about__gallery .splide__arrow svg { fill: var(--ink); }
+.about__gallery .splide__pagination__page {
+  background: transparent;
+  border: 2px solid var(--white);
+  opacity: 1;
+}
+.about__gallery .splide__pagination__page.is-active { background: var(--white); }
+
 .about__endorsement { font-size: 0.95rem; color: rgba(34, 27, 69, 0.7); }
 
 /* =========================================================
@@ -296,6 +330,34 @@ img { max-width: 100%; display: block; }
   color: rgba(34, 27, 69, 0.7);
   margin-bottom: 40px;
 }
+
+/* Flyer gallery — spans a wide chunk of the section, several flyers
+   visible side by side (not a single big view). Each frame uses
+   object-fit: contain (not cover) so nothing on the flyer — which is
+   usually covered in text — gets cropped off; the panel-colored frame
+   fills in any letterboxed space around flyers that don't exactly
+   match the frame's aspect ratio. */
+.flyer-gallery {
+  max-width: 1100px;
+  margin: 0 auto 56px;
+}
+.flyer-frame {
+  aspect-ratio: 3 / 4;
+  background: var(--panel);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+.flyer-frame img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+#flyer-splide .splide__arrow {
+  background: var(--white);
+  border: 2px solid var(--ink);
+  opacity: 1;
+}
+#flyer-splide .splide__arrow svg { fill: var(--ink); }
 
 .event-list { max-width: 900px; margin: 0 auto; }
 .event-list__pair {
@@ -409,7 +471,7 @@ img { max-width: 100%; display: block; }
   .hero__inner { grid-template-columns: 1fr; }
   .hero__visual { order: -1; }
   .about__inner { grid-template-columns: 1fr; text-align: left; }
-  .about__mark { width: 140px; }
+  .about__galleries { max-width: 520px; margin: 0 auto; }
   .event-list__pair { grid-template-columns: 1fr; gap: 0; }
   .pillar { padding: 20px 0; }
   .pillar + .pillar { border-top: 1px solid var(--border); }
@@ -427,6 +489,10 @@ img { max-width: 100%; display: block; }
   }
   .navbar__links.is-open { display: flex; }
   .navbar__toggle { display: flex; }
+}
+
+@media (max-width: 520px) {
+  .about__galleries { flex-direction: column; max-width: 260px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

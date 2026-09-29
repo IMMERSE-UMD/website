@@ -34,6 +34,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }).mount();
   }
 
+  // ===== About — event recap galleries =====
+  // Two independent carousels, same crossfade pattern as the hero
+  // mascot carousel above. Add more the same way (new id in
+  // index.html + matching block here) if you add a third gallery.
+  ['about-gallery-1', 'about-gallery-2'].forEach((id) => {
+    if (document.getElementById(id)) {
+      new Splide(`#${id}`, {
+        type: 'fade',
+        rewind: true,
+        pagination: true,
+        arrows: true,
+        autoplay: !reducedMotion,
+        interval: 4000,
+        pauseOnHover: true,
+      }).mount();
+    }
+  });
+
+  // ===== Event flyer gallery =====
+  // Several flyers visible side by side (perPage), not one at a time.
+  // type: 'slide' (not 'loop') since loop mode misbehaves when there
+  // are fewer slides than perPage -- fine for any flyer count.
+  // No autoplay on purpose -- flyers have text people need time to
+  // read, so navigation is left entirely to arrows, not a timer.
+  if (document.getElementById('flyer-splide')) {
+    new Splide('#flyer-splide', {
+      type: 'slide',
+      perPage: 5,
+      perMove: 1,
+      gap: '1.5rem',
+      pagination: false,
+      arrows: true,
+      autoplay: false,
+      breakpoints: {
+        1024: { perPage: 4 },
+        768:  { perPage: 3 },
+        480:  { perPage: 2 },
+      },
+    }).mount();
+  }
+
   // ===== Executive Board — Splide carousel =====
   if (document.getElementById('exec-board-splide')) {
     new Splide('#exec-board-splide', {
