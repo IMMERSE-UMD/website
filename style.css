@@ -42,9 +42,7 @@
   --max-width: 1140px;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -54,28 +52,18 @@ body {
   line-height: 1.6;
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 600;
   margin: 0 0 0.5em;
   line-height: 1.15;
 }
 
-p {
-  margin: 0 0 1em;
-}
+p { margin: 0 0 1em; }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+a { color: inherit; text-decoration: none; }
 
-img {
-  max-width: 100%;
-  display: block;
-}
+img { max-width: 100%; display: block; }
 
 /* =========================================================
    BUTTONS — plain, rounded rectangle, one flat state change
@@ -91,30 +79,19 @@ img {
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
-
 .btn--primary {
   background: var(--ink);
   color: var(--white);
 }
-
-.btn--primary:hover {
-  background: var(--indigo);
-}
+.btn--primary:hover { background: var(--indigo); }
 
 .btn--outline {
   background: transparent;
   border-color: currentColor;
 }
+.btn--outline:hover { background: var(--ink); color: var(--white); }
 
-.btn--outline:hover {
-  background: var(--ink);
-  color: var(--white);
-}
-
-.logo-img {
-  height: 40px;
-  width: auto;
-}
+.logo-img { height: 40px; width: auto; }
 
 /* =========================================================
    NAVBAR
@@ -126,7 +103,6 @@ img {
   background: var(--paper);
   border-bottom: 1px solid var(--border);
 }
-
 .navbar__inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -135,17 +111,13 @@ img {
   align-items: center;
   justify-content: space-between;
 }
-
 .navbar__links {
   display: flex;
   gap: 32px;
   font-family: var(--font-display);
   font-weight: 500;
 }
-
-.navbar__links a:hover {
-  color: var(--indigo);
-}
+.navbar__links a:hover { color: var(--indigo); }
 
 .navbar__toggle {
   display: none;
@@ -155,21 +127,13 @@ img {
   border: none;
   cursor: pointer;
 }
-
-.navbar__toggle span {
-  width: 24px;
-  height: 2px;
-  background: var(--ink);
-}
+.navbar__toggle span { width: 24px; height: 2px; background: var(--ink); }
 
 /* =========================================================
    HERO — left-aligned, direct copy, single visual (no stock
    dashboard mockups, no floating decoration).
    ========================================================= */
-.hero {
-  background: var(--panel);
-}
-
+.hero { background: var(--panel); }
 .hero__inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -179,28 +143,19 @@ img {
   gap: 48px;
   align-items: center;
 }
-
 .hero h1 {
   font-size: clamp(2.6rem, 6vw, 4rem);
   letter-spacing: -0.01em;
 }
-
 .hero__tagline {
   font-size: 1.1rem;
   max-width: 46ch;
 }
 
-.hero__visual {
-  display: flex;
-  justify-content: center;
-}
+.hero__visual { display: flex; justify-content: center; }
+.hero__logo { width: 100%; max-width: 360px; height: auto; }
 
-#mascot-splide {
-  width: 280px;
-  max-width: 100%;
-  margin: 0 auto;
-  overflow: hidden;
-}
+#mascot-splide { width: 280px; max-width: 100%; margin: 0 auto; overflow: hidden; }
 
 .mascot-frame {
   width: 280px;
@@ -214,32 +169,20 @@ img {
   overflow: hidden;
   padding: 20px;
 }
-
-.mascot-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+.mascot-frame img { width: 100%; height: 100%; object-fit: contain; }
 
 #mascot-splide .splide__arrow {
   background: var(--white);
   border: 2px solid var(--ink);
   opacity: 1;
 }
-
-#mascot-splide .splide__arrow svg {
-  fill: var(--ink);
-}
-
+#mascot-splide .splide__arrow svg { fill: var(--ink); }
 #mascot-splide .splide__pagination__page {
   background: transparent;
   border: 2px solid var(--ink);
   opacity: 1;
 }
-
-#mascot-splide .splide__pagination__page.is-active {
-  background: var(--ink);
-}
+#mascot-splide .splide__pagination__page.is-active { background: var(--ink); }
 
 /* =========================================================
    ACCOLADES — one line, left-aligned, no icon/label.
@@ -250,7 +193,6 @@ img {
   border-bottom: 1px solid var(--border);
   padding: 28px 24px;
 }
-
 .accolades p {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -261,11 +203,7 @@ img {
 /* =========================================================
    ABOUT — logo sits beside the copy, not stacked above it.
    ========================================================= */
-.about {
-  background: var(--paper);
-  padding: 72px 24px;
-}
-
+.about { background: var(--paper); padding: 72px 24px; }
 .about__inner {
   max-width: 860px;
   margin: 0 auto;
@@ -274,47 +212,64 @@ img {
   gap: 40px;
   align-items: center;
 }
-
-.about__mark {
-  width: 100%;
-  height: auto;
-}
-
-.about__endorsement {
-  font-size: 0.95rem;
-  color: rgba(34, 27, 69, 0.7);
-}
+.about__mark { width: 100%; height: auto; }
+.about__endorsement { font-size: 0.95rem; color: rgba(34, 27, 69, 0.7); }
 
 /* =========================================================
    EXECUTIVE BOARD — Splide carousel, flat cards
    ========================================================= */
-.exec-board {
-  background: var(--dark);
-  padding: 72px 24px;
-}
+.exec-board { background: var(--dark); padding: 72px 24px; }
+.exec-board h2 { color: var(--white); text-align: center; margin-bottom: 40px; }
+.exec-board .splide { max-width: var(--max-width); margin: 0 auto; }
 
-.exec-board h2 {
-  color: var(--white);
-  text-align: center;
-  margin-bottom: 40px;
-}
+.exec-card { text-align: center; padding: 4px; }
 
-.exec-board .splide {
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-.exec-card {
-  text-align: center;
-  padding: 4px;
-}
-
-.exec-card__photo {
+.exec-card__photo-wrap {
+  position: relative;
   aspect-ratio: 1 / 1;
   border-radius: var(--radius);
-  background: var(--dark-panel);
+  overflow: hidden;
   margin-bottom: 12px;
-  /* Replace with member headshot: background-image / <img> */
+  cursor: pointer;
+}
+.exec-card__photo {
+  width: 100%;
+  height: 100%;
+  background: var(--dark-panel);
+}
+.exec-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* Bio overlay — shown on hover (desktop), toggled by tap via
+   the .is-open class (script.js) on touch devices. */
+.exec-card__bio {
+  position: absolute;
+  inset: 0;
+  background: rgba(23, 18, 58, 0.94);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.exec-card__bio p {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.exec-card__photo-wrap:hover .exec-card__bio,
+.exec-card__photo-wrap.is-open .exec-card__bio {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .exec-card__name {
@@ -323,52 +278,26 @@ img {
   font-weight: 500;
   margin-bottom: 2px;
 }
+.exec-card__position { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin: 0; }
 
-.exec-card__position {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.exec-board .splide__arrow {
-  background: var(--dark-panel);
-  border: none;
-}
-
-.exec-board .splide__arrow svg {
-  fill: var(--white);
-}
-
-.exec-board .splide__pagination__page.is-active {
-  background: var(--gold);
-}
+.exec-board .splide__arrow { background: var(--dark-panel); border: none; }
+.exec-board .splide__arrow svg { fill: var(--white); }
+.exec-board .splide__pagination__page.is-active { background: var(--gold); }
 
 /* =========================================================
    EVENT TYPES — pillars + the event types each one runs.
    Same flat row/rule pattern as the rest of the site: no
    icon-in-a-box cards, just typography and a divider.
    ========================================================= */
-.event-types {
-  background: var(--paper);
-  padding: 72px 24px;
-}
-
-.event-types h2 {
-  text-align: center;
-  margin-bottom: 8px;
-}
-
+.event-types { background: var(--paper); padding: 72px 24px; }
+.event-types h2 { text-align: center; margin-bottom: 8px; }
 .event-types__intro {
   text-align: center;
   color: rgba(34, 27, 69, 0.7);
   margin-bottom: 40px;
 }
 
-.event-list {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
+.event-list { max-width: 900px; margin: 0 auto; }
 .event-list__pair {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -376,10 +305,7 @@ img {
   padding: 32px 0;
   border-top: 1px solid var(--border);
 }
-
-.event-list__pair:last-child {
-  border-bottom: 1px solid var(--border);
-}
+.event-list__pair:last-child { border-bottom: 1px solid var(--border); }
 
 .pillar h3 {
   font-family: var(--font-display);
@@ -387,7 +313,6 @@ img {
   font-size: 1.15rem;
   margin: 0 0 6px;
 }
-
 .pillar__subtitle {
   display: block;
   font-family: var(--font-body);
@@ -397,28 +322,13 @@ img {
   margin-top: 2px;
   margin-bottom: 14px;
 }
-
-.pillar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 8px;
-}
-
-.pillar li {
-  padding-left: 16px;
-  position: relative;
-  color: rgba(34, 27, 69, 0.8);
-}
-
+.pillar ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.pillar li { padding-left: 16px; position: relative; color: rgba(34, 27, 69, 0.8); }
 .pillar li::before {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0.6em;
-  width: 6px;
-  height: 6px;
+  left: 0; top: 0.6em;
+  width: 6px; height: 6px;
   background: var(--indigo);
 }
 
@@ -426,23 +336,13 @@ img {
    CALENDAR — stacked, not mirrored with Hero's split layout.
    Copy on top, full-width embed below.
    ========================================================= */
-.calendar {
-  background: var(--panel);
-  padding: 72px 24px;
-}
-
+.calendar { background: var(--panel); padding: 72px 24px; }
 .calendar__header {
   max-width: 640px;
   margin: 0 auto 32px;
   text-align: center;
 }
-
-.calendar__header p {
-  max-width: 52ch;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+.calendar__header p { max-width: 52ch; margin-left: auto; margin-right: auto; }
 .calendar__embed {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -452,20 +352,12 @@ img {
   overflow: hidden;
   background: var(--white);
 }
-
-.calendar__embed iframe {
-  display: block;
-}
+.calendar__embed iframe { display: block; }
 
 /* =========================================================
    CONTACT / FOOTER
    ========================================================= */
-.contact {
-  background: var(--paper);
-  border-top: 1px solid var(--border);
-  padding: 64px 24px 32px;
-}
-
+.contact { background: var(--paper); border-top: 1px solid var(--border); padding: 64px 24px 32px; }
 .contact__inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -474,7 +366,6 @@ img {
   gap: 48px;
   align-items: start;
 }
-
 .contact__links {
   list-style: none;
   padding: 0;
@@ -483,15 +374,8 @@ img {
   gap: 24px;
   flex-wrap: wrap;
 }
-
-.contact__links a {
-  font-weight: 600;
-  border-bottom: 2px solid transparent;
-}
-
-.contact__links a:hover {
-  border-bottom-color: currentColor;
-}
+.contact__links a { font-weight: 600; border-bottom: 2px solid transparent; }
+.contact__links a:hover { border-bottom-color: currentColor; }
 
 .newsletter-form label {
   display: block;
@@ -499,13 +383,7 @@ img {
   margin-bottom: 8px;
   font-size: 0.9rem;
 }
-
-.newsletter-form__row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
+.newsletter-form__row { display: flex; gap: 10px; flex-wrap: wrap; }
 .newsletter-form input {
   flex: 1;
   min-width: 220px;
@@ -515,11 +393,7 @@ img {
   font-family: var(--font-body);
   font-size: 1rem;
 }
-
-.newsletter-form input:focus {
-  outline: 2px solid var(--indigo);
-  outline-offset: 2px;
-}
+.newsletter-form input:focus { outline: 2px solid var(--indigo); outline-offset: 2px; }
 
 .contact__copyright {
   text-align: center;
@@ -532,45 +406,18 @@ img {
    RESPONSIVE
    ========================================================= */
 @media (max-width: 860px) {
-  .hero__inner {
-    grid-template-columns: 1fr;
-  }
-
-  .hero__visual {
-    order: -1;
-  }
-
-  .about__inner {
-    grid-template-columns: 1fr;
-    text-align: left;
-  }
-
-  .about__mark {
-    width: 140px;
-  }
-
-  .event-list__pair {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .pillar {
-    padding: 20px 0;
-  }
-
-  .pillar+.pillar {
-    border-top: 1px solid var(--border);
-  }
-
-  .contact__inner {
-    grid-template-columns: 1fr;
-  }
+  .hero__inner { grid-template-columns: 1fr; }
+  .hero__visual { order: -1; }
+  .about__inner { grid-template-columns: 1fr; text-align: left; }
+  .about__mark { width: 140px; }
+  .event-list__pair { grid-template-columns: 1fr; gap: 0; }
+  .pillar { padding: 20px 0; }
+  .pillar + .pillar { border-top: 1px solid var(--border); }
+  .contact__inner { grid-template-columns: 1fr; }
 
   .navbar__links {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+    top: 100%; left: 0; right: 0;
     background: var(--paper);
     border-bottom: 1px solid var(--border);
     flex-direction: column;
@@ -578,19 +425,10 @@ img {
     display: none;
     gap: 16px;
   }
-
-  .navbar__links.is-open {
-    display: flex;
-  }
-
-  .navbar__toggle {
-    display: flex;
-  }
+  .navbar__links.is-open { display: flex; }
+  .navbar__toggle { display: flex; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-    animation: none !important;
-  }
+  * { transition: none !important; animation: none !important; }
 }

@@ -46,11 +46,26 @@ document.addEventListener('DOMContentLoaded', () => {
       autoplay: false,
       breakpoints: {
         1024: { perPage: 3 },
-        768: { perPage: 2 },
-        480: { perPage: 1 },
+        768:  { perPage: 2 },
+        480:  { perPage: 1 },
       },
     }).mount();
   }
+
+  // ===== Executive Board — bio overlay =====
+  // Hover reveals the bio on desktop (pure CSS, see style.css). Since
+  // there's no hover on touch devices, tapping a photo toggles the
+  // same overlay via this .is-open class, and tapping a different
+  // card closes whichever one was open.
+  document.querySelectorAll('.exec-card__photo-wrap').forEach((wrap) => {
+    wrap.addEventListener('click', () => {
+      const alreadyOpen = wrap.classList.contains('is-open');
+      document.querySelectorAll('.exec-card__photo-wrap.is-open').forEach((open) => {
+        open.classList.remove('is-open');
+      });
+      if (!alreadyOpen) wrap.classList.add('is-open');
+    });
+  });
 });
 
 // ===== Newsletter form (placeholder handler — wire up to your provider) =====
