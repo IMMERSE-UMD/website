@@ -115,22 +115,27 @@ img { max-width: 100%; display: block; }
   background: var(--gold);
   clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
   opacity: 0;
-  animation: sparkle 7s ease-in-out infinite;
+  /* Two independent loops with different lengths, so each star wanders
+     instead of repeating the same small bounce */
+  animation:
+    sparkle-twinkle var(--twinkle, 6s) ease-in-out var(--delay, 0s) infinite,
+    sparkle-drift var(--drift, 18s) ease-in-out var(--delay, 0s) infinite alternate;
 }
-.hero__sparkles span:nth-child(1) { top: 14%; left: 6%;  animation-delay: 0s; }
-.hero__sparkles span:nth-child(2) { top: 70%; left: 3%;  width: 14px; background: var(--purple); animation-delay: 1.6s; }
-.hero__sparkles span:nth-child(3) { top: 86%; left: 34%; width: 16px; background: var(--blue); animation-delay: 3.2s; }
-.hero__sparkles span:nth-child(4) { top: 10%; left: 46%; width: 12px; animation-delay: 4.4s; }
-.hero__sparkles span:nth-child(5) { top: 8%;  left: 90%; width: 18px; background: var(--purple); animation-delay: 2.2s; }
-.hero__sparkles span:nth-child(6) { top: 58%; left: 95%; width: 14px; animation-delay: 5.4s; }
-.hero__sparkles span:nth-child(7) { top: 90%; left: 80%; width: 20px; background: var(--blue); animation-delay: 0.8s; }
-.hero__sparkles span:nth-child(8) { top: 44%; left: 50%; width: 10px; background: var(--purple); animation-delay: 6.2s; }
-@keyframes sparkle {
-  0%, 100% { opacity: 0; transform: translateY(8px) scale(0.6) rotate(0deg); }
-  35%, 65% { opacity: 0.45; transform: translateY(-6px) scale(1) rotate(12deg); }
+/* Positions, sizes and colors are set by script.js, which scatters the
+   stars into the empty space around the text and pictures */
+@keyframes sparkle-twinkle {
+  0%, 100% { opacity: 0;    scale: 0.5; rotate: 0deg; }
+  40%, 60% { opacity: 0.65; scale: 1;   rotate: 45deg; }
+}
+@keyframes sparkle-drift {
+  0%   { translate: 0 0; }
+  33%  { translate: 22px -18px; }
+  66%  { translate: -14px -34px; }
+  100% { translate: 10px -12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero__sparkles span { animation: none; opacity: 0.3; }
+  .hero__sparkles span { animation: none; opacity: 0.35; }
+  .calendar__ducks span { animation: none; }
 }
 .hero__inner {
   max-width: var(--max-width);
@@ -162,7 +167,8 @@ img { max-width: 100%; display: block; }
 .hero__pillars span { display: block; font-size: 0.82rem; color: var(--ink-soft); line-height: 1.35; }
 .hero__pillars a:hover strong { color: var(--indigo); }
 
-.hero__visual { position: relative; display: flex; justify-content: center; padding: 24px 0; }
+.hero__visual { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.hero__stage { position: relative; width: 100%; max-width: 600px; display: flex; justify-content: center; padding: 40px 0; }
 .hero__photo {
   position: absolute;
   width: 42%; aspect-ratio: 4 / 5;
@@ -174,8 +180,12 @@ img { max-width: 100%; display: block; }
 .hero { overflow-x: clip; }
 .hero__photo,
 .hero__frame { transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.hero__photo--a { left: -4%; bottom: 0; transform: rotate(-4deg); }
-.hero__photo--b { right: -4%; top: 0; transform: rotate(4deg); }
+.hero__photo--a { left: -9%; bottom: 0; transform: rotate(-4deg); }
+.hero__photo--b { right: -9%; top: 0; transform: rotate(4deg); }
+@media (max-width: 1240px) {
+  .hero__photo--a { left: -4%; }
+  .hero__photo--b { right: -4%; }
+}
 /* Each piece slides out diagonally, away from the logo, when hovered */
 .hero__photo--a:hover { transform: translate(-28px, 22px) rotate(-9deg); }
 .hero__photo--b:hover { transform: translate(28px, -22px) rotate(9deg); }
@@ -185,13 +195,13 @@ img { max-width: 100%; display: block; }
 .hero__visual:has(.hero__frame:hover) .hero__photo--b { transform: translate(12px, -10px) rotate(6deg); }
 .hero__frame {
   width: 100%;
-  max-width: 380px;
-  aspect-ratio: 4 / 5;
+  max-width: 440px;
+  aspect-ratio: 5 / 4;
   position: relative; z-index: 1;
   background: var(--paper);
-  border-radius: 140px / 120px;
+  border-radius: var(--radius-lg);
   display: flex; align-items: center; justify-content: center;
-  padding: 48px;
+  padding: 32px 40px;
 }
 .hero__logo { width: 100%; height: auto; }
 
@@ -351,6 +361,21 @@ img { max-width: 100%; display: block; }
 
 /* ---------- Events: copy left, flyer carousel right, three type cards below ---------- */
 .events { background: var(--band); padding: 88px 24px 80px; }
+
+/* Little rubber ducks floating behind the Calendar section. script.js only
+   adds them when the next event's name mentions Duck-a-palooza. */
+.calendar__ducks { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.calendar__ducks span {
+  position: absolute;
+  opacity: 0.55;
+  animation: duck-bob var(--bob, 5s) ease-in-out var(--delay, 0s) infinite;
+}
+.calendar__ducks svg { display: block; width: 100%; height: auto; }
+.calendar__ducks span.is-flipped svg { transform: scaleX(-1); }
+@keyframes duck-bob {
+  0%, 100% { translate: 0 0;    rotate: -4deg; }
+  50%      { translate: 0 -8px; rotate: 4deg; }
+}
 .events__inner {
   max-width: var(--max-width);
   margin: 0 auto 56px;
@@ -359,6 +384,7 @@ img { max-width: 100%; display: block; }
   gap: 56px;
   align-items: center;
 }
+.events__copy, .events__flyers { min-width: 0; }   /* let the carousel shrink to the column */
 .events__copy h2 { font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 500; margin-bottom: 0.4em; }
 .events__copy p { font-size: 1.15rem; color: var(--ink-soft); max-width: 48ch; }
 .events__flyers-title {
@@ -420,25 +446,26 @@ img { max-width: 100%; display: block; }
 .event-modal__list li::marker { color: var(--gold); }
 
 /* ---------- Calendar: copy left, embed right ---------- */
-.calendar { background: var(--mist); padding: 80px 24px 96px; }
+.calendar { background: var(--mist); padding: 80px 24px 96px; position: relative; }
+.calendar__inner { position: relative; z-index: 1; }
 .calendar__inner {
   max-width: var(--max-width);
   margin: 0 auto;
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
   gap: 56px;
-  align-items: start;
+  align-items: stretch;
 }
 .calendar__copy { padding-top: 8px; }
 .calendar__copy h2 { font-size: clamp(1.8rem, 3.4vw, 2.4rem); font-weight: 500; }
 .calendar__copy p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 1.6em; }
 .calendar__embed {
-  height: 480px;
+  min-height: 480px;   /* grows to match the copy + Next up card beside it */
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--paper);
 }
-.calendar__embed iframe { display: block; }
+.calendar__embed iframe { display: block; height: 100%; min-height: 480px; }
 
 /* ---------- Contact: wide group photo left, link cards right ---------- */
 .contact { background: var(--paper); padding: 96px 32px; }
@@ -512,7 +539,8 @@ img { max-width: 100%; display: block; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .hero__inner { grid-template-columns: 1fr; padding: 56px 24px; gap: 40px; }
-  .hero__frame { max-width: 280px; }
+  .hero__frame { max-width: 300px; padding: 22px 26px; }
+  .hero__stage { max-width: 380px; }
   .hero__visual { order: 0; }
   .hero__pillars { grid-template-columns: repeat(2, 1fr); row-gap: 20px; }
   .hero__photo { width: 36%; }
@@ -529,8 +557,11 @@ img { max-width: 100%; display: block; }
   .about__galleries { max-width: 540px; width: 100%; margin: 0 auto; }
   .calendar__inner { grid-template-columns: 1fr; gap: 32px; }
   .events__inner { grid-template-columns: 1fr; gap: 32px; }
+  #flyer-splide .splide__arrow--prev { left: 4px; }
+  #flyer-splide .splide__arrow--next { right: 4px; }
   .event-cards { grid-template-columns: repeat(2, 1fr); }
-  .calendar__embed { height: 420px; }
+  .calendar__embed { min-height: 0; height: 440px; }
+  .calendar__embed iframe { min-height: 0; }
   .contact__inner { grid-template-columns: 1fr; gap: 32px; padding: 16px 16px 40px; border-radius: var(--radius-md); }
   .contact__photo img { min-height: 0; height: auto; aspect-ratio: 3 / 2; border-radius: 20px; }
   .contact__copy { padding: 0 8px; }
@@ -598,7 +629,7 @@ body { position: relative; }
 @media print { .circuit { display: none; } }
 
 /* ---------- Calendar: "Next up" card with countdown ---------- */
-.next-up {
+.calendar__copy .next-up {
   margin-top: 36px;
   padding: 24px 26px;
   background: var(--paper);
@@ -607,23 +638,66 @@ body { position: relative; }
   max-width: 460px;
 }
 .calendar__copy .next-up__label { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em; color: var(--indigo); margin: 0 0 4px; }
-.next-up__title { font-size: 1.45rem; margin: 0 0 6px; }
+.calendar__copy .next-up__title { font-size: 1.45rem; margin: 0 0 6px; }
 .calendar__copy .next-up__when { margin: 0; font-size: 1rem; color: var(--ink); font-weight: 600; }
 .calendar__copy .next-up__where { margin: 2px 0 0; font-size: 0.95rem; color: var(--ink-soft); }
-.next-up__countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
-.next-up__countdown[hidden] { display: none; }
-.next-up__countdown div {
+.calendar__copy .next-up__countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+.calendar__copy .next-up__countdown[hidden] { display: none; }
+.calendar__copy .next-up__countdown div {
   background: var(--mist);
   border-radius: var(--radius-sm);
   padding: 10px 4px 8px;
   text-align: center;
 }
-.next-up__countdown span {
+.calendar__copy .next-up__countdown span {
   display: block;
   font-family: var(--font-display); font-weight: 600; font-size: 1.9rem; line-height: 1.1;
   color: var(--indigo);
   font-variant-numeric: tabular-nums;
 }
-.next-up__countdown small { font-size: 0.78rem; color: var(--ink-soft); }
+.calendar__copy .next-up__countdown small { font-size: 0.78rem; color: var(--ink-soft); }
 .calendar__copy .next-up__now { margin: 16px 0 0; font-weight: 700; color: var(--indigo); }
-.next-up.is-live { border-left-color: var(--orange); }
+.calendar__copy .next-up.is-live { border-left-color: var(--orange); }
+
+/* ---------- Hero: "Upcoming event" countdown ---------- */
+/* Just the countdown plus a link down to the full details in the Calendar section */
+.hero__copy { min-width: 0; }
+.hero-next {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  width: 100%; max-width: 520px;
+  margin: 28px 0 0;
+  position: relative; z-index: 2;
+  text-align: center;
+  color: var(--ink);
+}
+.hero-next[hidden] { display: none; }
+.hero-next .next-up__countdown {
+  display: flex; align-items: baseline; gap: 10px;
+  color: var(--ink-soft); font-size: 1.05rem; font-variant-numeric: tabular-nums;
+}
+.hero-next .next-up__countdown[hidden],
+.hero-next .next-up__countdown > span[hidden] { display: none; }
+.hero-next .next-up__countdown b {
+  display: inline-block; min-width: 2.2em; margin-right: 3px; padding: 4px 8px;
+  background: var(--paper); border-radius: 8px;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; line-height: 1.15;
+  color: var(--indigo);
+}
+.hero-next .next-up__now {
+  font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; color: var(--orange);
+}
+.hero-next .next-up__now[hidden] { display: none; }
+.hero-next__cta { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px 12px; font-size: 0.95rem; }
+.hero-next .next-up__label {
+  font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--indigo);
+}
+.hero-next .next-up__label::before {
+  content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px;
+  border-radius: 50%; background: var(--gold); vertical-align: 1px;
+}
+.hero-next__more { color: var(--ink-soft); }
+.hero-next:hover .hero-next__more { color: var(--indigo); text-decoration: underline; text-underline-offset: 3px; }
+.hero-next.is-live .next-up__label::before { background: var(--orange); }
+@media (max-width: 520px) {
+  .hero-next .next-up__countdown b, .hero-next .next-up__now { font-size: 1.5rem; }
+}

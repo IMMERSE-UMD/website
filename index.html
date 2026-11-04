@@ -44,10 +44,7 @@
   <!-- ============ HERO ============ -->
   <section class="hero" id="home">
     <!-- Faint drifting diamond sparkles, shaped like the star in the logo -->
-    <div class="hero__sparkles" aria-hidden="true">
-      <span></span><span></span><span></span><span></span>
-      <span></span><span></span><span></span><span></span>
-    </div>
+    <div class="hero__sparkles" aria-hidden="true"></div>
     <div class="hero__inner">
       <div class="hero__copy">
         <h1 data-circuit-node>Welcome to IMMERSE</h1>
@@ -69,6 +66,7 @@
         </ul>
       </div>
       <div class="hero__visual">
+        <div class="hero__stage">
         <div class="hero__frame">
           <!-- The PNG shows first; script.js swaps in the SVG version and
                draws it on page load (falls back to the PNG if the SVG can't load). -->
@@ -81,6 +79,22 @@
           class="hero__photo hero__photo--a">
         <img src="assets/event_photos/Bob_Ross_Social_Recap/5.png" alt="IMMERSE at the First Look Fair"
           class="hero__photo hero__photo--b">
+        </div>
+        <!-- Compact "Next up" countdown. Filled by the same calendar script as
+             the card in the Calendar section; hidden until an event loads. -->
+        <a href="#calendar" class="hero-next" data-next-up hidden>
+          <span class="next-up__countdown" role="timer" aria-label="Time until the next event">
+            <span data-hide-zero><b data-unit="days">0</b>d</span>
+            <span><b data-unit="hours">0</b>h</span>
+            <span><b data-unit="minutes">0</b>m</span>
+            <span><b data-unit="seconds">0</b>s</span>
+          </span>
+          <span class="next-up__now" hidden>Happening now</span>
+          <span class="hero-next__cta">
+            <span class="next-up__label">Upcoming event</span>
+            <span class="hero-next__more">Click to learn more <span aria-hidden="true">↓</span></span>
+          </span>
+        </a>
         <!-- Mascot carousel — commented out for now. Uncomment this block
              (and remove the .hero__frame above) to bring it back; script.js
              already guards against it being missing.
@@ -536,6 +550,7 @@
 
   <!-- ============ CALENDAR ============ -->
   <section class="calendar" id="calendar">
+    <div class="calendar__ducks" aria-hidden="true"></div>
     <div class="calendar__inner">
       <div class="calendar__copy">
         <h2 data-circuit-node>Add our Google Calendar</h2>
@@ -550,7 +565,7 @@
         <!-- "Next up" card. script.js fills this from the public Google
              Calendar (needs the API key set at the top of the calendar block
              in script.js). It stays hidden until an event loads. -->
-        <div class="next-up" id="nextUp" hidden>
+        <div class="next-up" id="nextUp" data-next-up hidden>
           <p class="next-up__label">Next up</p>
           <h3 class="next-up__title"></h3>
           <p class="next-up__when"></p>

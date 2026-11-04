@@ -254,6 +254,16 @@ newsletterForm.addEventListener('submit', (e) => {
   svg.setAttribute('aria-label', img.alt);
   img.replaceWith(svg);
 
+  // Trim the SVG's canvas to the artwork itself. Exported files often carry
+  // uneven empty space around the art, which pushes the logo off-center.
+  try {
+    const bb = svg.getBBox();
+    if (bb.width && bb.height) {
+      const pad = Math.max(bb.width, bb.height) * 0.01;
+      svg.setAttribute('viewBox', `${bb.x - pad} ${bb.y - pad} ${bb.width + pad * 2} ${bb.height + pad * 2}`);
+    }
+  } catch (_) { /* keep the file's own viewBox */ }
+
   const shapes = [...svg.querySelectorAll('path, circle, ellipse, rect, polygon, polyline, line')]
     .filter((el) => !el.closest('defs, clipPath, mask, pattern, marker, symbol'));
   if (!shapes.length) return;
@@ -517,20 +527,23 @@ newsletterForm.addEventListener('submit', (e) => {
   const CALENDAR_ID = 'c_b4fb6e3e45ee03be749c026cfe70262e74b34394fc7dcd6b22368919a9de9f08@group.calendar.google.com';
   const TIME_ZONE = 'America/New_York';
 
-  const card = document.getElementById('nextUp');
-  if (!card || !GOOGLE_API_KEY || GOOGLE_API_KEY.startsWith('PASTE_')) return;
-
-  const titleEl = card.querySelector('.next-up__title');
-  const whenEl = card.querySelector('.next-up__when');
-  const whereEl = card.querySelector('.next-up__where');
-  const countdownEl = card.querySelector('.next-up__countdown');
-  const nowEl = card.querySelector('.next-up__now');
-  const units = {
-    days: card.querySelector('[data-unit="days"]'),
-    hours: card.querySelector('[data-unit="hours"]'),
-    minutes: card.querySelector('[data-unit="minutes"]'),
-    seconds: card.querySelector('[data-unit="seconds"]'),
-  };
+  // Every element marked data-next-up gets filled: the card in the Calendar
+  // section and the compact one in the hero. One request feeds both.
+  const cards = [...document.querySelectorAll('[data-next-up]')].map((el) => ({
+    el,
+    title: el.querySelector('.next-up__title'),
+    when: el.querySelector('.next-up__when'),
+    where: el.querySelector('.next-up__where'),
+    countdown: el.querySelector('.next-up__countdown'),
+    now: el.querySelector('.next-up__now'),
+    units: {
+      days: el.querySelector('[data-unit="days"]'),
+      hours: el.querySelector('[data-unit="hours"]'),
+      minutes: el.querySelector('[data-unit="minutes"]'),
+      seconds: el.querySelector('[data-unit="seconds"]'),
+    },
+  }));
+  if (!cards.length || !GOOGLE_API_KEY || GOOGLE_API_KEY.startsWith('PASTE_')) return;
   let timer = null;
 
   // All-day events come back as a plain date ("2026-11-18"): treat as local midnight
@@ -542,6 +555,8 @@ newsletterForm.addEventListener('submit', (e) => {
     const time = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TIME_ZONE });
     return `${date} · ${time}`;
   };
+
+  const hideAll = () => cards.forEach((c) => { c.el.hidden = true; });
 
   async function loadNext() {
     const params = new URLSearchParams({
@@ -560,43 +575,180 @@ newsletterForm.addEventListener('submit', (e) => {
       data = await res.json();
     } catch (err) {
       console.warn('[IMMERSE] Could not load the next event:', err.message);
-      card.hidden = true;
+      hideAll();
       return;
     }
 
     const event = data.items && data.items[0];
-    if (!event) { card.hidden = true; return; }
+    if (!event) { hideAll(); return; }
 
     const start = parseWhen(event.start);
     const end = parseWhen(event.end);
-    titleEl.textContent = event.summary || 'IMMERSE event';
-    whenEl.textContent = formatWhen(start, !event.start.dateTime);
-    whereEl.textContent = event.location || '';
-    whereEl.hidden = !event.location;
-    card.hidden = false;
+    cards.forEach((c) => {
+      if (c.title) c.title.textContent = event.summary || 'IMMERSE event';
+      if (c.when) c.when.textContent = formatWhen(start, !event.start.dateTime);
+      if (c.where) {
+        c.where.textContent = event.location || '';
+        c.where.hidden = !event.location;
+      }
+      c.el.hidden = false;
+    });
+    // let other parts of the page react to the event (e.g. the Duck-a-palooza ducks)
+    document.dispatchEvent(new CustomEvent('immerse:next-event', { detail: { name: event.summary || '' } }));
 
     clearInterval(timer);
     const tick = () => {
       const now = Date.now();
       if (now >= end.getTime()) { clearInterval(timer); loadNext(); return; }
       const live = now >= start.getTime();
-      countdownEl.hidden = live;
-      nowEl.hidden = !live;
-      card.classList.toggle('is-live', live);
-      if (live) return;
 
-      let s = Math.floor((start.getTime() - now) / 1000);
+      let s = Math.max(0, Math.floor((start.getTime() - now) / 1000));
       const d = Math.floor(s / 86400); s -= d * 86400;
       const h = Math.floor(s / 3600); s -= h * 3600;
       const m = Math.floor(s / 60); s -= m * 60;
-      units.days.textContent = d;
-      units.hours.textContent = String(h).padStart(2, '0');
-      units.minutes.textContent = String(m).padStart(2, '0');
-      units.seconds.textContent = String(s).padStart(2, '0');
+
+      cards.forEach((c) => {
+        if (c.countdown) c.countdown.hidden = live;
+        if (c.now) c.now.hidden = !live;
+        c.el.classList.toggle('is-live', live);
+        if (live) return;
+        if (c.units.days) {
+          c.units.days.textContent = d;
+          // the hero line drops "0d" so it just reads "in 2h 05m 10s"
+          const wrap = c.units.days.closest('[data-hide-zero]');
+          if (wrap) wrap.hidden = d === 0;
+        }
+        if (c.units.hours) c.units.hours.textContent = String(h).padStart(2, '0');
+        if (c.units.minutes) c.units.minutes.textContent = String(m).padStart(2, '0');
+        if (c.units.seconds) c.units.seconds.textContent = String(s).padStart(2, '0');
+      });
     };
     tick();
     timer = setInterval(tick, 1000);
   }
 
   loadNext();
+})();
+
+/* ---------- Background stars (hero) and ducks (events) ----------
+   Scatters decorations into the empty space of a section: random spots are
+   tried and kept only if they don't overlap text, pictures or each other.
+   A fixed seed keeps the layout the same on every visit. Re-run on resize. */
+(() => {
+  const STAR = 'polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%)';
+  const DUCK = `<svg viewBox="0 0 64 54" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 30c0-4 3-6 7-5 4 1 9 3 15 3 3 0 4-2 4-5 0-8 6-14 14-14s13 6 13 13c0 4-2 7-5 9 6 2 9 6 8 11-2 7-12 10-26 10C14 52 4 44 4 30Z" fill="#f5ce45"/>
+    <path d="M57 19l7 2-7 4c-1-2-1-4 0-6Z" fill="#f39237"/>
+    <circle cx="48" cy="17" r="2.4" fill="#1a1240"/>
+    <path d="M18 35c6 5 16 6 23 1-2 6-8 9-14 8-5-1-8-4-9-9Z" fill="#e8b92e"/>
+  </svg>`;
+
+  // small seeded random-number generator
+  const rng = (seed) => () => {
+    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const between = (r, a, b) => a + r() * (b - a);
+  const hit = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+
+  function scatter({ section, layer, avoid, pad, gap, perArea, max, size, seed, make }) {
+    layer.innerHTML = '';
+    const box = section.getBoundingClientRect();
+    const W = box.width, H = box.height;
+    // Headings and paragraphs are measured line by line, so the empty space to
+    // the right of a short line (like "Welcome to") stays available
+    const rectsOf = (el) => {
+      if (/^(H1|H2|H3|P)$/.test(el.tagName)) {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        return [...range.getClientRects()];
+      }
+      return [el.getBoundingClientRect()];
+    };
+    const blocked = [...section.querySelectorAll(avoid)]
+      .flatMap(rectsOf)
+      .filter((r) => r.width && r.height)
+      .map((r) => ({ x: r.left - box.left - pad, y: r.top - box.top - pad, w: r.width + pad * 2, h: r.height + pad * 2 }));
+    // keep clear of the circuit line running down the left side
+    const line = document.querySelector('.circuit__line, .circuit__track');
+    if (line) {
+      const lx = line.getBoundingClientRect().left - box.left;
+      blocked.push({ x: lx - 30, y: 0, w: 80, h: H });
+    }
+    const r = rng(seed);
+    const want = Math.min(max, Math.round((W * H) / perArea));
+    const placed = [];
+    for (let tries = 0; placed.length < want && tries < want * 60; tries++) {
+      const s = between(r, size[0], size[1]);
+      const spot = { x: between(r, 8, W - s - 8), y: between(r, 8, H - s - 8), w: s, h: s };
+      const roomy = { x: spot.x - gap, y: spot.y - gap, w: s + gap * 2, h: s + gap * 2 };
+      if (blocked.some((b) => hit(spot, b)) || placed.some((p) => hit(roomy, p))) continue;
+      placed.push(spot);
+      const el = make(r, s);
+      el.style.left = `${spot.x}px`;
+      el.style.top = `${spot.y}px`;
+      layer.appendChild(el);
+    }
+  }
+
+  const hero = document.querySelector('.hero');
+  const stars = document.querySelector('.hero__sparkles');
+  const calendar = document.querySelector('.calendar');
+  const ducks = document.querySelector('.calendar__ducks');
+  let duckTime = false; // true when the next event is a Duck-a-palooza
+
+  document.addEventListener('immerse:next-event', (e) => {
+    duckTime = /duck[\s-]*a[\s-]*palooza/i.test(e.detail.name);
+    build();
+  });
+
+  function build() {
+    if (hero && stars) {
+      scatter({
+        section: hero, layer: stars, seed: 7,
+        // text, buttons, pictures and the countdown (stars drift ~35px, hence the padding)
+        avoid: '.hero__copy h1, .hero__tagline, .hero__actions a, .hero__pillars a, .hero__stage, .hero-next',
+        pad: 36, gap: 70, perArea: 22000, max: 40, size: [9, 22],
+        make: (r, s) => {
+          const el = document.createElement('span');
+          const colors = ['var(--gold)', 'var(--gold)', 'var(--purple)', 'var(--blue)'];
+          el.style.width = `${s}px`;
+          el.style.background = colors[Math.floor(r() * colors.length)];
+          el.style.setProperty('--twinkle', `${between(r, 5, 9).toFixed(1)}s`);
+          el.style.setProperty('--drift', `${between(r, 15, 24).toFixed(1)}s`);
+          el.style.setProperty('--delay', `${-between(r, 0, 14).toFixed(1)}s`);
+          return el;
+        },
+      });
+    }
+    if (calendar && ducks) {
+      if (!duckTime) { ducks.innerHTML = ''; return; }
+      scatter({
+        section: calendar, layer: ducks, seed: 42,
+        avoid: '.calendar__copy > *, .calendar__embed',
+        pad: 18, gap: 60, perArea: 70000, max: 14, size: [30, 54],
+        make: (r, s) => {
+          const el = document.createElement('span');
+          el.style.width = `${s}px`;
+          el.innerHTML = DUCK;
+          if (r() < 0.5) el.classList.add('is-flipped');
+          el.style.setProperty('--bob', `${between(r, 4, 7).toFixed(1)}s`);
+          el.style.setProperty('--delay', `${-between(r, 0, 7).toFixed(1)}s`);
+          return el;
+        },
+      });
+    }
+  }
+
+  let t;
+  const later = () => { clearTimeout(t); t = setTimeout(build, 150); };
+  requestAnimationFrame(build); // after the circuit line has been drawn
+  window.addEventListener('load', build);
+  window.addEventListener('resize', later);
+  if ('ResizeObserver' in window) {
+    const ro = new ResizeObserver(later);
+    [hero, calendar].forEach((el) => el && ro.observe(el));
+  }
 })();
