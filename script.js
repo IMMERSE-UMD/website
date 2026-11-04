@@ -16,6 +16,7 @@ navLinks.querySelectorAll('a').forEach((link) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const carousels = {}; // kept so the arrow keys can drive them
 
   // ===== Hero — Mascot carousel =====
   // One pose at a time, simple crossfade. Add more slides in index.html
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // No autoplay on purpose -- flyers have text people need time to
   // read, so navigation is left entirely to arrows, not a timer.
   if (document.getElementById('flyer-splide')) {
-    new Splide('#flyer-splide', {
+    carousels.flyer = new Splide('#flyer-splide', {
       type: 'loop',
       perPage: 2,
       perMove: 1,
@@ -76,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== Executive Board — Splide carousel =====
   if (document.getElementById('exec-board-splide')) {
-    new Splide('#exec-board-splide', {
+    carousels.exec = new Splide('#exec-board-splide', {
       type: 'loop',
       perPage: 4,
       perMove: 1,
@@ -91,6 +92,28 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     }).mount();
   }
+
+  // ===== Arrow keys for the board and flyer carousels =====
+  // Left/Right moves whichever of the two carousels is most on screen.
+  // Ignored while typing in a field or while a popup is open.
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+    if (document.querySelector('dialog[open]')) return;
+
+    let best = null;
+    let bestVisible = 0;
+    Object.values(carousels).forEach((splide) => {
+      const r = splide.root.getBoundingClientRect();
+      const visible = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+      if (visible > bestVisible) { bestVisible = visible; best = splide; }
+    });
+    if (!best || bestVisible < 120) return;
+
+    e.preventDefault();
+    best.go(e.key === 'ArrowRight' ? '>' : '<');
+  });
 
   // ===== Executive Board — bio popup =====
   // One shared <dialog>, filled from whichever card was clicked.
@@ -128,6 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (link) linkEl.href = link;
 
       modal.showModal();
+      modal.scrollTop = 0;
+      modal.querySelector('.bio-modal__content').scrollTop = 0;
     };
 
     document.querySelectorAll('.exec-card__photo-wrap').forEach((wrap) => {
@@ -171,6 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
           list.appendChild(li);
         });
         eventModal.showModal();
+        eventModal.scrollTop = 0;
+        eventModal.querySelector('.bio-modal__content').scrollTop = 0;
       });
     });
 
@@ -187,3 +214,389 @@ newsletterForm.addEventListener('submit', (e) => {
   alert('Thanks for signing up! (Hook this form up to your newsletter provider.)');
   newsletterForm.reset();
 });
+
+// =====================================================================
+// Hero logo — draws itself on page load
+// Loads the SVG version of the logo, swaps it in for the PNG, then each
+// shape traces its outline and fills in with its own color. Works with any
+// SVG export. If the SVG can't load (or motion is reduced), the PNG stays.
+// =====================================================================
+(async () => {
+  const img = document.querySelector('.hero__logo[data-svg]');
+  if (!img || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  let text;
+  try {
+    const res = await fetch(encodeURI(img.dataset.svg));
+    if (!res.ok) return;
+    text = await res.text();
+  } catch (err) {
+    return; // e.g. opened as a local file: keep the PNG
+  }
+
+  const parsed = new DOMParser().parseFromString(text, 'image/svg+xml');
+  const source = parsed.documentElement;
+  if (!source || source.nodeName.toLowerCase() !== 'svg' || parsed.querySelector('parsererror')) return;
+  if (source.querySelector('image')) return; // the "SVG" just wraps a picture: nothing to draw
+
+  if (!source.getAttribute('viewBox')) {
+    const w = parseFloat(source.getAttribute('width'));
+    const h = parseFloat(source.getAttribute('height'));
+    if (!w || !h) return;
+    source.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  }
+  source.removeAttribute('width');
+  source.removeAttribute('height');
+
+  const svg = document.importNode(source, true);
+  svg.setAttribute('class', 'hero__logo hero__logo--svg');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', img.alt);
+  img.replaceWith(svg);
+
+  const shapes = [...svg.querySelectorAll('path, circle, ellipse, rect, polygon, polyline, line')]
+    .filter((el) => !el.closest('defs, clipPath, mask, pattern, marker, symbol'));
+  if (!shapes.length) return;
+
+  // Outline thickness in SVG units that looks like ~1.6px on screen
+  const unitsPerPx = svg.viewBox.baseVal.width / svg.getBoundingClientRect().width;
+  const stagger = Math.min(70, 1400 / shapes.length); // whole draw lands around 2–2.5s
+
+  shapes.forEach((el, i) => {
+    // Snapshot the shape's real colors first (computed styles are live and
+    // would otherwise reflect the temporary animation styles set below)
+    const cs = getComputedStyle(el);
+    const fill = cs.fill;
+    const stroke = cs.stroke;
+    const fillOpacity = cs.fillOpacity;
+    const len = typeof el.getTotalLength === 'function' ? el.getTotalLength() : 0;
+    const hasStroke = stroke !== 'none';
+    const originalStyle = el.getAttribute('style');
+    const delay = i * stagger;
+
+    el.style.stroke = hasStroke ? stroke : fill;
+    if (!hasStroke) el.style.strokeWidth = String(1.6 * unitsPerPx);
+    el.style.strokeDasharray = String(len);
+    el.style.strokeDashoffset = String(len);
+    el.style.fillOpacity = '0';
+
+    const anims = [
+      el.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }],
+        { duration: 1000, delay, easing: 'cubic-bezier(0.45, 0, 0.2, 1)', fill: 'forwards' }),
+      el.animate([{ fillOpacity: 0 }, { fillOpacity }],
+        { duration: 500, delay: delay + 750, easing: 'ease-out', fill: 'forwards' }),
+    ];
+    if (!hasStroke) {
+      anims.push(el.animate([{ strokeOpacity: 1 }, { strokeOpacity: 0 }],
+        { duration: 400, delay: delay + 950, fill: 'forwards' }));
+    }
+
+    // When done, put the shape back exactly as the SVG defined it
+    Promise.all(anims.map((a) => a.finished)).then(() => {
+      anims.forEach((a) => a.cancel());
+      if (originalStyle === null) el.removeAttribute('style');
+      else el.setAttribute('style', originalStyle);
+    });
+  });
+
+  svg.querySelectorAll('text').forEach((t) => {
+    t.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 600, delay: 1200, fill: 'backwards' });
+  });
+})();
+
+// =====================================================================
+// Circuit line down the page
+// A trace in the logo's purple-to-blue runs through the left margin,
+// connecting each section heading marked with data-circuit-node. It draws
+// itself as you scroll, and each node lights up gold when the line reaches
+// it. Hidden when the margin is too narrow to hold it.
+// =====================================================================
+(() => {
+  const headings = [...document.querySelectorAll('[data-circuit-node]')];
+  if (!headings.length) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NS = 'http://www.w3.org/2000/svg';
+
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'circuit');
+  svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="circuitGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1000">
+        <stop offset="0" stop-color="#a960e3"/>
+        <stop offset="0.5" stop-color="#1e8ff0"/>
+        <stop offset="1" stop-color="#a960e3"/>
+      </linearGradient>
+    </defs>
+    <path class="circuit__track"/>
+    <path class="circuit__line" stroke="url(#circuitGrad)"/>
+    <g class="circuit__nodes"></g>`;
+  document.body.appendChild(svg);
+
+  const track = svg.querySelector('.circuit__track');
+  const line = svg.querySelector('.circuit__line');
+  const nodesGroup = svg.querySelector('.circuit__nodes');
+  const grad = svg.querySelector('#circuitGrad');
+
+  let total = 0;
+  let lookup = []; // [length, y] samples, used to find how much line to show
+  let nodes = [];
+  let active = false;
+
+  // The widest content blocks decide how much margin there is
+  const wideBlocks = '.hero__inner, .about__inner, .exec-board, .events__inner, .calendar__inner, .contact__inner';
+
+  function build() {
+    const vw = document.documentElement.clientWidth;
+    const contentLeft = Math.min(...[...document.querySelectorAll(wideBlocks)]
+      .map((el) => el.getBoundingClientRect().left));
+    const x0 = contentLeft - 34;
+    active = x0 >= 16;
+    svg.style.display = active ? '' : 'none';
+    if (!active) return;
+
+    const ys = headings.map((h) => {
+      const r = h.getBoundingClientRect();
+      return r.top + window.scrollY + Math.min(r.height, 44) / 2;
+    });
+
+    // Only as tall as the line itself (down to the last node). Sizing it to
+    // the whole page made it count its own height and leave a gap under
+    // the footer whenever the page got shorter.
+    const lineH = Math.ceil(ys[ys.length - 1] + 24);
+    svg.setAttribute('width', vw);
+    svg.setAttribute('height', lineH);
+    svg.setAttribute('viewBox', `0 0 ${vw} ${lineH}`);
+    grad.setAttribute('y2', lineH);
+
+    // Vertical trace with a 45° jog in each long span, like a circuit board trace
+    const jog = 14;
+    let d = `M ${x0} ${Math.max(0, ys[0] - 90)} L ${x0} ${ys[0]}`;
+    for (let i = 1; i < ys.length; i++) {
+      const y1 = ys[i - 1];
+      const y2 = ys[i];
+      const span = y2 - y1;
+      if (span > 260) {
+        const a = y1 + span * 0.32;
+        const b = y1 + span * 0.68;
+        d += ` L ${x0} ${a} L ${x0 + jog} ${a + jog} L ${x0 + jog} ${b - jog} L ${x0} ${b}`;
+      }
+      d += ` L ${x0} ${y2}`;
+    }
+    track.setAttribute('d', d);
+    line.setAttribute('d', d);
+
+    total = line.getTotalLength();
+    line.style.strokeDasharray = String(total);
+    lookup = [];
+    for (let s = 0; s <= total; s += 6) lookup.push([s, line.getPointAtLength(s).y]);
+    lookup.push([total, line.getPointAtLength(total).y]);
+
+    // Nodes: a gold ring (like the logo's dots) plus a short stub toward the content
+    nodesGroup.innerHTML = '';
+    const stubLen = Math.max(0, Math.min(22, contentLeft - x0 - 18));
+    nodes = ys.map((y) => {
+      const g = document.createElementNS(NS, 'g');
+      g.setAttribute('class', 'circuit__node');
+      g.innerHTML = `
+        <line class="circuit__stub" x1="${x0 + 8}" y1="${y}" x2="${x0 + 8 + stubLen}" y2="${y}"
+          style="stroke-dasharray:${stubLen};stroke-dashoffset:${stubLen}"/>
+        <circle class="circuit__tip" cx="${x0 + 8 + stubLen + 3}" cy="${y}" r="3"/>
+        <circle class="circuit__ring" cx="${x0}" cy="${y}" r="7"/>`;
+      nodesGroup.appendChild(g);
+      return { y, g };
+    });
+    update();
+  }
+
+  // How much of the line reaches down to page position y
+  function lengthAt(y) {
+    if (y <= lookup[0][1]) return 0;
+    let lo = 0;
+    let hi = lookup.length - 1;
+    if (y >= lookup[hi][1]) return total;
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >> 1;
+      if (lookup[mid][1] < y) lo = mid; else hi = mid;
+    }
+    const [l1, y1] = lookup[lo];
+    const [l2, y2] = lookup[hi];
+    return y2 === y1 ? l2 : l1 + ((y - y1) / (y2 - y1)) * (l2 - l1);
+  }
+
+  function update() {
+    if (!active) return;
+    const tipY = reduceMotion ? Infinity : window.scrollY + window.innerHeight * 0.55;
+    line.style.strokeDashoffset = String(total - lengthAt(tipY));
+    nodes.forEach((n) => n.g.classList.toggle('is-lit', n.y <= tipY));
+  }
+
+  let queued = false;
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; update(); });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Rebuild when layout changes (resizing, images loading, carousels mounting)
+  let rebuildTimer;
+  const rebuild = () => { clearTimeout(rebuildTimer); rebuildTimer = setTimeout(build, 120); };
+  window.addEventListener('resize', rebuild);
+  window.addEventListener('load', rebuild);
+  if ('ResizeObserver' in window) new ResizeObserver(rebuild).observe(document.body);
+  build();
+})();
+
+// =====================================================================
+// Navbar — gold underline slides to the section you're in
+// Hovering a link previews it; leaving snaps back to the current section.
+// The calendar counts as "Events" (it sits right after that section).
+// =====================================================================
+(() => {
+  const nav = document.getElementById('navLinks');
+  const indicator = nav && nav.querySelector('.navbar__indicator');
+  if (!indicator) return;
+
+  const links = [...nav.querySelectorAll('a[href^="#"]')];
+  const sections = links.map((a) => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  let current = links[0];
+
+  const moveTo = (link) => {
+    if (!link) return;
+    indicator.style.width = `${link.offsetWidth}px`;
+    indicator.style.transform = `translateX(${link.offsetLeft}px)`;
+    indicator.classList.add('is-ready');
+  };
+
+  const findCurrent = () => {
+    const line = window.scrollY + window.innerHeight * 0.35;
+    let idx = 0;
+    sections.forEach((sec, i) => {
+      if (sec.getBoundingClientRect().top + window.scrollY <= line) idx = i;
+    });
+    // At the very bottom, the last link (Contact) is current
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) idx = links.length - 1;
+    return links[idx];
+  };
+
+  const refresh = () => {
+    const next = findCurrent();
+    if (next !== current) {
+      current.classList.remove('is-current');
+      current.removeAttribute('aria-current');
+    }
+    current = next;
+    current.classList.add('is-current');
+    current.setAttribute('aria-current', 'true');
+    if (!nav.matches(':hover')) moveTo(current);
+  };
+
+  links.forEach((a) => a.addEventListener('mouseenter', () => moveTo(a)));
+  nav.addEventListener('mouseleave', () => moveTo(current));
+
+  let queued = false;
+  window.addEventListener('scroll', () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; refresh(); });
+  }, { passive: true });
+  window.addEventListener('resize', refresh);
+  document.fonts && document.fonts.ready.then(refresh);
+  refresh();
+})();
+
+// =====================================================================
+// Calendar — "Next up" card with a live countdown
+// Reads the next event from the public IMMERSE Google Calendar.
+// Paste your Google API key below (see setup steps). Until then, or if
+// there are no upcoming events, the card simply stays hidden.
+// =====================================================================
+(() => {
+  const GOOGLE_API_KEY = 'AIzaSyCl8nINOFJZBC3SJ7Zz50YrNYLI9u-TyjA';
+  const CALENDAR_ID = 'c_b4fb6e3e45ee03be749c026cfe70262e74b34394fc7dcd6b22368919a9de9f08@group.calendar.google.com';
+  const TIME_ZONE = 'America/New_York';
+
+  const card = document.getElementById('nextUp');
+  if (!card || !GOOGLE_API_KEY || GOOGLE_API_KEY.startsWith('PASTE_')) return;
+
+  const titleEl = card.querySelector('.next-up__title');
+  const whenEl = card.querySelector('.next-up__when');
+  const whereEl = card.querySelector('.next-up__where');
+  const countdownEl = card.querySelector('.next-up__countdown');
+  const nowEl = card.querySelector('.next-up__now');
+  const units = {
+    days: card.querySelector('[data-unit="days"]'),
+    hours: card.querySelector('[data-unit="hours"]'),
+    minutes: card.querySelector('[data-unit="minutes"]'),
+    seconds: card.querySelector('[data-unit="seconds"]'),
+  };
+  let timer = null;
+
+  // All-day events come back as a plain date ("2026-11-18"): treat as local midnight
+  const parseWhen = (w) => (w.dateTime ? new Date(w.dateTime) : new Date(`${w.date}T00:00:00`));
+
+  const formatWhen = (start, allDay) => {
+    const date = start.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: TIME_ZONE });
+    if (allDay) return date;
+    const time = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: TIME_ZONE });
+    return `${date} · ${time}`;
+  };
+
+  async function loadNext() {
+    const params = new URLSearchParams({
+      key: GOOGLE_API_KEY,
+      timeMin: new Date().toISOString(), // includes an event that's in progress right now
+      singleEvents: 'true',
+      orderBy: 'startTime',
+      maxResults: '1',
+    });
+    const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events?${params}`;
+
+    let data;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Calendar request failed (${res.status})`);
+      data = await res.json();
+    } catch (err) {
+      console.warn('[IMMERSE] Could not load the next event:', err.message);
+      card.hidden = true;
+      return;
+    }
+
+    const event = data.items && data.items[0];
+    if (!event) { card.hidden = true; return; }
+
+    const start = parseWhen(event.start);
+    const end = parseWhen(event.end);
+    titleEl.textContent = event.summary || 'IMMERSE event';
+    whenEl.textContent = formatWhen(start, !event.start.dateTime);
+    whereEl.textContent = event.location || '';
+    whereEl.hidden = !event.location;
+    card.hidden = false;
+
+    clearInterval(timer);
+    const tick = () => {
+      const now = Date.now();
+      if (now >= end.getTime()) { clearInterval(timer); loadNext(); return; }
+      const live = now >= start.getTime();
+      countdownEl.hidden = live;
+      nowEl.hidden = !live;
+      card.classList.toggle('is-live', live);
+      if (live) return;
+
+      let s = Math.floor((start.getTime() - now) / 1000);
+      const d = Math.floor(s / 86400); s -= d * 86400;
+      const h = Math.floor(s / 3600); s -= h * 3600;
+      const m = Math.floor(s / 60); s -= m * 60;
+      units.days.textContent = d;
+      units.hours.textContent = String(h).padStart(2, '0');
+      units.minutes.textContent = String(m).padStart(2, '0');
+      units.seconds.textContent = String(s).padStart(2, '0');
+    };
+    tick();
+    timer = setInterval(tick, 1000);
+  }
+
+  loadNext();
+})();

@@ -85,13 +85,53 @@ img { max-width: 100%; display: block; }
 }
 .logo-img { height: 54px; width: auto; }
 .navbar__links { display: flex; gap: 44px; font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; }
-.navbar__links a { padding: 4px 0; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s; }
-.navbar__links a:hover { color: var(--indigo); border-bottom-color: var(--gold); }
+.navbar__links { position: relative; }
+.navbar__links a { padding: 4px 0 8px; transition: color 0.15s; }
+.navbar__links a:hover,
+.navbar__links a.is-current { color: var(--indigo); }
+/* One gold underline that slides between links (positioned by script.js) */
+.navbar__indicator {
+  position: absolute; left: 0; bottom: -2px;
+  height: 3px; width: 0;
+  border-radius: 3px;
+  background: var(--gold);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+  pointer-events: none;
+}
+.navbar__indicator.is-ready { opacity: 1; }
 .navbar__toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
 .navbar__toggle span { width: 28px; height: 3px; background: var(--ink); }
 
 /* ---------- Hero: copy left, tall rounded frame right ---------- */
-.hero { background: var(--mist); }
+.hero { background: var(--mist); position: relative; }
+.hero__inner { position: relative; z-index: 1; }
+
+/* Faint diamond sparkles (the logo's star shape) drifting behind the hero */
+.hero__sparkles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.hero__sparkles span {
+  position: absolute;
+  width: 22px; aspect-ratio: 1;
+  background: var(--gold);
+  clip-path: polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%);
+  opacity: 0;
+  animation: sparkle 7s ease-in-out infinite;
+}
+.hero__sparkles span:nth-child(1) { top: 14%; left: 6%;  animation-delay: 0s; }
+.hero__sparkles span:nth-child(2) { top: 70%; left: 3%;  width: 14px; background: var(--purple); animation-delay: 1.6s; }
+.hero__sparkles span:nth-child(3) { top: 86%; left: 34%; width: 16px; background: var(--blue); animation-delay: 3.2s; }
+.hero__sparkles span:nth-child(4) { top: 10%; left: 46%; width: 12px; animation-delay: 4.4s; }
+.hero__sparkles span:nth-child(5) { top: 8%;  left: 90%; width: 18px; background: var(--purple); animation-delay: 2.2s; }
+.hero__sparkles span:nth-child(6) { top: 58%; left: 95%; width: 14px; animation-delay: 5.4s; }
+.hero__sparkles span:nth-child(7) { top: 90%; left: 80%; width: 20px; background: var(--blue); animation-delay: 0.8s; }
+.hero__sparkles span:nth-child(8) { top: 44%; left: 50%; width: 10px; background: var(--purple); animation-delay: 6.2s; }
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: translateY(8px) scale(0.6) rotate(0deg); }
+  35%, 65% { opacity: 0.45; transform: translateY(-6px) scale(1) rotate(12deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__sparkles span { animation: none; opacity: 0.3; }
+}
 .hero__inner {
   max-width: var(--max-width);
   margin: 0 auto;
@@ -131,8 +171,18 @@ img { max-width: 100%; display: block; }
   border: 6px solid var(--paper);
   background: #d9d3ef;
 }
+.hero { overflow-x: clip; }
+.hero__photo,
+.hero__frame { transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .hero__photo--a { left: -4%; bottom: 0; transform: rotate(-4deg); }
 .hero__photo--b { right: -4%; top: 0; transform: rotate(4deg); }
+/* Each piece slides out diagonally, away from the logo, when hovered */
+.hero__photo--a:hover { transform: translate(-28px, 22px) rotate(-9deg); }
+.hero__photo--b:hover { transform: translate(28px, -22px) rotate(9deg); }
+.hero__frame:hover { transform: translate(-10px, -10px) rotate(-2deg); }
+/* Hovering the logo also nudges both photos outward a little */
+.hero__visual:has(.hero__frame:hover) .hero__photo--a { transform: translate(-12px, 10px) rotate(-6deg); }
+.hero__visual:has(.hero__frame:hover) .hero__photo--b { transform: translate(12px, -10px) rotate(6deg); }
 .hero__frame {
   width: 100%;
   max-width: 380px;
@@ -251,22 +301,26 @@ img { max-width: 100%; display: block; }
 }
 
 /* ---------- Bio popup (native <dialog>) ---------- */
-.bio-modal[open] { display: grid; grid-template-columns: 300px 1fr; }
-.bio-modal.bio-modal--no-photo[open] { grid-template-columns: 1fr; }
-.bio-modal--no-photo .bio-modal__photo { display: none; }
-.bio-modal__photo { background: #d9d3ef; }
-.bio-modal__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-.bio-modal__content { display: flex; flex-direction: column; min-width: 0; overflow-y: auto; }
-.bio-modal__footer { margin-top: auto !important; }
+/* The picture column is always 4:5 and runs the full height of the popup;
+   its width follows from that height, and the text takes the rest. */
 .bio-modal {
-  width: min(860px, calc(100vw - 32px));
-  max-height: calc(100vh - 48px);
+  --modal-h: min(600px, calc(100vh - 48px));
+  --photo-w: calc(var(--modal-h) * 0.8);   /* 4:5 picture, full popup height */
+  width: min(calc(var(--photo-w) + 520px), calc(100vw - 32px));
+  height: var(--modal-h);
   padding: 0;
   border: none;
   border-radius: var(--radius-md);
   color: var(--ink);
-  overflow: auto;
+  overflow: hidden;
 }
+.bio-modal[open] { display: grid; grid-template-columns: var(--photo-w) 1fr; }
+.bio-modal.bio-modal--no-photo[open] { grid-template-columns: 1fr; }
+.bio-modal--no-photo .bio-modal__photo { display: none; }
+.bio-modal__photo { width: var(--photo-w); height: 100%; min-height: 0; overflow: hidden; background: #d9d3ef; }
+.bio-modal__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.bio-modal__content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; }
+.bio-modal__footer { margin-top: auto !important; }
 .bio-modal::backdrop { background: rgba(26, 18, 64, 0.55); }
 .bio-modal__header { background: var(--mist); text-align: left; padding: 32px 36px 24px; }
 .bio-modal__name { font-size: 2rem; margin: 0 0 8px; }
@@ -360,8 +414,7 @@ img { max-width: 100%; display: block; }
 .event-card__more::after { content: ' \2192'; }
 
 /* Event popup reuses the bio popup styles; the picture is a flyer, so it isn't cropped */
-.event-modal__photo { display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--mist); }
-.event-modal__photo img { height: auto; max-height: 100%; object-fit: contain; border-radius: var(--radius-sm); }
+.event-modal__photo img { object-position: center; }
 .event-modal__label { font-weight: 700; font-size: 0.9rem; color: var(--indigo); margin: 0 0 4px; }
 .event-modal__list { margin: 0 0 8px; padding-left: 1.2em; display: grid; gap: 6px; color: var(--ink-soft); }
 .event-modal__list li::marker { color: var(--gold); }
@@ -463,8 +516,12 @@ img { max-width: 100%; display: block; }
   .hero__visual { order: 0; }
   .hero__pillars { grid-template-columns: repeat(2, 1fr); row-gap: 20px; }
   .hero__photo { width: 36%; }
+  .bio-modal { height: auto; max-height: calc(100vh - 32px); overflow-y: auto; }
   .bio-modal[open] { grid-template-columns: 1fr; }
-  .bio-modal__photo { height: 240px; }
+  .bio-modal__photo { height: 44vh; width: 100%; }
+  .bio-modal__content { overflow: visible; }
+  .event-modal__photo { background: var(--mist); }
+  .event-modal__photo img { object-fit: contain; }
   .bio-modal__header { padding: 24px 24px 18px; }
   .bio-modal__body { padding: 20px 24px 4px; }
   .bio-modal__name { font-size: 1.6rem; }
@@ -473,8 +530,6 @@ img { max-width: 100%; display: block; }
   .calendar__inner { grid-template-columns: 1fr; gap: 32px; }
   .events__inner { grid-template-columns: 1fr; gap: 32px; }
   .event-cards { grid-template-columns: repeat(2, 1fr); }
-  .event-modal__photo { height: 280px; }
-  .event-modal__photo img { max-height: 248px; }
   .calendar__embed { height: 420px; }
   .contact__inner { grid-template-columns: 1fr; gap: 32px; padding: 16px 16px 40px; border-radius: var(--radius-md); }
   .contact__photo img { min-height: 0; height: auto; aspect-ratio: 3 / 2; border-radius: 20px; }
@@ -491,6 +546,7 @@ img { max-width: 100%; display: block; }
   }
   .navbar__links.is-open { display: flex; }
   .navbar__toggle { display: flex; }
+  .navbar__indicator { display: none; }
 }
 
 @media (max-width: 640px) {
@@ -514,3 +570,60 @@ img { max-width: 100%; display: block; }
 .bio-modal button:focus:not(:focus-visible),
 .bio-modal a:focus:not(:focus-visible) { outline: none; }
 .bio-modal__role:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- Hero logo (SVG version, drawn in by script.js) ---------- */
+.hero__logo--svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* ---------- Circuit line down the page (built by script.js) ---------- */
+body { position: relative; }
+.circuit { position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none; overflow: visible; }
+.circuit__track,
+.circuit__line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.circuit__track { stroke: rgba(169, 96, 227, 0.18); stroke-width: 2; }
+.circuit__line { stroke-width: 3; }
+.circuit__ring {
+  fill: var(--paper);
+  stroke: #d6cdf2;
+  stroke-width: 3;
+  transform-box: fill-box; transform-origin: center;
+  transition: stroke 0.3s ease;
+}
+.circuit__stub { stroke: var(--gold); stroke-width: 2.5; stroke-linecap: round; transition: stroke-dashoffset 0.35s ease 0.1s; }
+.circuit__tip { fill: var(--gold); opacity: 0; transition: opacity 0.2s ease 0.4s; }
+.circuit__node.is-lit .circuit__ring { stroke: var(--gold); animation: circuit-pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1.4); }
+.circuit__node.is-lit .circuit__stub { stroke-dashoffset: 0 !important; }
+.circuit__node.is-lit .circuit__tip { opacity: 1; }
+@keyframes circuit-pop { 0% { transform: scale(0.6); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+
+@media print { .circuit { display: none; } }
+
+/* ---------- Calendar: "Next up" card with countdown ---------- */
+.next-up {
+  margin-top: 36px;
+  padding: 24px 26px;
+  background: var(--paper);
+  border-radius: var(--radius-md);
+  border-left: 5px solid var(--gold);
+  max-width: 460px;
+}
+.calendar__copy .next-up__label { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.04em; color: var(--indigo); margin: 0 0 4px; }
+.next-up__title { font-size: 1.45rem; margin: 0 0 6px; }
+.calendar__copy .next-up__when { margin: 0; font-size: 1rem; color: var(--ink); font-weight: 600; }
+.calendar__copy .next-up__where { margin: 2px 0 0; font-size: 0.95rem; color: var(--ink-soft); }
+.next-up__countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px; }
+.next-up__countdown[hidden] { display: none; }
+.next-up__countdown div {
+  background: var(--mist);
+  border-radius: var(--radius-sm);
+  padding: 10px 4px 8px;
+  text-align: center;
+}
+.next-up__countdown span {
+  display: block;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.9rem; line-height: 1.1;
+  color: var(--indigo);
+  font-variant-numeric: tabular-nums;
+}
+.next-up__countdown small { font-size: 0.78rem; color: var(--ink-soft); }
+.calendar__copy .next-up__now { margin: 16px 0 0; font-weight: 700; color: var(--indigo); }
+.next-up.is-live { border-left-color: var(--orange); }

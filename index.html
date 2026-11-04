@@ -33,6 +33,7 @@
         <a href="#about">About</a>
         <a href="#events">Events</a>
         <a href="#contact">Contact</a>
+        <span class="navbar__indicator" aria-hidden="true"></span>
       </nav>
       <button class="navbar__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -42,9 +43,14 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="home">
+    <!-- Faint drifting diamond sparkles, shaped like the star in the logo -->
+    <div class="hero__sparkles" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span>
+    </div>
     <div class="hero__inner">
       <div class="hero__copy">
-        <h1>Welcome to IMMERSE</h1>
+        <h1 data-circuit-node>Welcome to IMMERSE</h1>
         <p class="hero__tagline">
           IMMERSE is where students explore, learn, and connect in immersive media through social, academic, and career
           driven events. Whether you're here to build skills, meet people, or break into art and technology, IMMERSE
@@ -64,14 +70,16 @@
       </div>
       <div class="hero__visual">
         <div class="hero__frame">
+          <!-- The PNG shows first; script.js swaps in the SVG version and
+               draws it on page load (falls back to the PNG if the SVG can't load). -->
           <img src="assets/primary_logo/IMMERSE Logo Fixed.png" alt="IMMERSE — Where Art Meets Tech"
-            class="hero__logo">
+            class="hero__logo" data-svg="assets/primary_logo/IMMERSE Logo Fixed SVG.svg">
         </div>
         <!-- Event photos layered around the logo. Swap these for any
              favorite event shots (paths point at the About recap photos). -->
         <img src="assets/event_photos/Bob_Ross_Social_Recap/2.png" alt="Members at the Bob Ross Social"
           class="hero__photo hero__photo--a">
-        <img src="assets/event_photos/First_Look_Fair/1.png" alt="IMMERSE at the First Look Fair"
+        <img src="assets/event_photos/Bob_Ross_Social_Recap/5.png" alt="IMMERSE at the First Look Fair"
           class="hero__photo hero__photo--b">
         <!-- Mascot carousel — commented out for now. Uncomment this block
              (and remove the .hero__frame above) to bring it back; script.js
@@ -101,7 +109,7 @@
 
   <!-- ============ ACCOLADES & SUPPORT ============ -->
   <section class="accolades">
-    <h2>Accolades &amp; Support</h2>
+    <h2 data-circuit-node>Accolades &amp; Support</h2>
     <p>Endorsed by the Immersive Media Design Department at the University of Maryland, College Park.</p>
   </section>
 
@@ -150,7 +158,7 @@
         </div>
       </div>
       <div class="about__copy">
-        <h2>About IMMERSE</h2>
+        <h2 data-circuit-node>About IMMERSE</h2>
         <p>
           IMMERSE (Immersive Media Makers Exploring Reality, Simulation, and Experiences) is a student-led organization
           affiliated with the Immersive Media Design department at the University of Maryland. The club serves as a
@@ -168,7 +176,7 @@
 
     <!-- ============ EXECUTIVE BOARD (Splide carousel) ============ -->
     <div class="exec-board">
-      <h2>Meet our 2026-2027 <i>Executive Board</i></h2>
+      <h2 data-circuit-node>Meet our 2026-2027 <i>Executive Board</i></h2>
       <div class="splide" id="exec-board-splide" aria-label="Executive Board Members">
         <div class="splide__track">
           <ul class="splide__list">
@@ -421,7 +429,7 @@
   <section class="events" id="events">
     <div class="events__inner">
       <div class="events__copy">
-        <h2>Our Events</h2>
+        <h2 data-circuit-node>Our Events</h2>
         <p>
           Everything we run ties back to our four pillars: Explore, Advance, Create, and Connect.
           We partner to host workshops and socials once a month, and professional events once a semester,
@@ -468,21 +476,20 @@
          for its text, so edit those to change what the popup says. -->
     <div class="event-cards">
       <button type="button" class="event-card event-card--academic"
-        data-img="assets/event_flyers/5.png" data-img-alt="Photogrammetry workshop flyer">
+        data-img="assets/event_flyers/2.png" data-img-alt="Photogrammetry workshop flyer">
         <span class="event-card__label">Explore &amp; Create</span>
         <span class="event-card__title">Academic</span>
         <span class="event-card__text">Hands-on workshops and talks on the tools and research behind immersive media.</span>
         <span class="event-card__more">Learn more</span>
         <span class="event-card__details" hidden>
           <span data-part="desc">Our academic events are about building real skills and staying curious. We host
-            hands-on workshops once a month, plus talks and demos that show what's happening in immersive
-            media research.</span>
-          <span data-part="list">Unity workshops|Blender workshops|Photogrammetry and creative coding sessions|Design challenges / hackathons|Research panels and guest lectures from faculty|Lab showcases / demos</span>
+            hands-on workshops once a month, with help from our department's faculty, staff, and even club members!</span>
+          <span data-part="list">Unity / Blender / Photogrammetry / Sound Design Workshops|Research panels and guest lectures from faculty|Lab showcases / demos|Collab Workshops with other organizations</span>
         </span>
       </button>
 
       <button type="button" class="event-card event-card--social"
-        data-img="assets/event_photos/Bob_Ross_Social_Recap/5.png" data-img-alt="Members at the Bob Ross Social">
+        data-img="assets/event_flyers/6.png" data-img-alt="Design a Duck Social">
         <span class="event-card__label">Connect</span>
         <span class="event-card__title">Social</span>
         <span class="event-card__text">Casual events to meet other students across the major, the club, and campus.</span>
@@ -495,7 +502,7 @@
       </button>
 
       <button type="button" class="event-card event-card--pro"
-        data-img="assets/event_flyers/6.png" data-img-alt="Portfolio workshop flyer">
+        data-img="assets/event_flyers/3.png" data-img-alt="Portfolio workshop flyer">
         <span class="event-card__label">Advance</span>
         <span class="event-card__title">Professional Development</span>
         <span class="event-card__text">Career-focused events to help you build your portfolio and connect with the industry.</span>
@@ -531,7 +538,7 @@
   <section class="calendar" id="calendar">
     <div class="calendar__inner">
       <div class="calendar__copy">
-        <h2>Add our Google Calendar</h2>
+        <h2 data-circuit-node>Add our Google Calendar</h2>
         <p>
           Stay up to date with all our upcoming events. We partner to host
           workshops and socials once a month, and professional events once
@@ -539,6 +546,23 @@
         </p>
         <a href="https://calendar.google.com/calendar/render?cid=c_b4fb6e3e45ee03be749c026cfe70262e74b34394fc7dcd6b22368919a9de9f08%40group.calendar.google.com"
           class="btn btn--outline" target="_blank" rel="noopener">Add to Google Calendar</a>
+
+        <!-- "Next up" card. script.js fills this from the public Google
+             Calendar (needs the API key set at the top of the calendar block
+             in script.js). It stays hidden until an event loads. -->
+        <div class="next-up" id="nextUp" hidden>
+          <p class="next-up__label">Next up</p>
+          <h3 class="next-up__title"></h3>
+          <p class="next-up__when"></p>
+          <p class="next-up__where" hidden></p>
+          <div class="next-up__countdown" role="timer" aria-label="Time until the next event">
+            <div><span data-unit="days">0</span><small>days</small></div>
+            <div><span data-unit="hours">0</span><small>hours</small></div>
+            <div><span data-unit="minutes">0</span><small>min</small></div>
+            <div><span data-unit="seconds">0</span><small>sec</small></div>
+          </div>
+          <p class="next-up__now" hidden>Happening now — come say hi!</p>
+        </div>
       </div>
       <div class="calendar__embed">
         <iframe
@@ -558,7 +582,7 @@
       </figure>
 
       <div class="contact__copy">
-        <h2>Stay in touch</h2>
+        <h2 data-circuit-node>Stay in touch</h2>
         <p>Sign up for our newsletter and follow along on socials.</p>
         <ul class="contact__links">
           <li>
