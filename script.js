@@ -60,17 +60,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // read, so navigation is left entirely to arrows, not a timer.
   if (document.getElementById('flyer-splide')) {
     new Splide('#flyer-splide', {
-      type: 'slide',
-      perPage: 5,
+      type: 'loop',
+      perPage: 2,
       perMove: 1,
-      gap: '1.5rem',
-      pagination: false,
+      gap: '1rem',
+      padding: { right: '18%' },   // peek at the next flyer, like the reference
+      pagination: true,
       arrows: true,
       autoplay: false,
       breakpoints: {
-        1024: { perPage: 4 },
-        768:  { perPage: 3 },
-        480:  { perPage: 2 },
+        640: { perPage: 1, padding: { right: '22%' } },
       },
     }).mount();
   }
@@ -81,32 +80,103 @@ document.addEventListener('DOMContentLoaded', () => {
       type: 'loop',
       perPage: 4,
       perMove: 1,
-      gap: '1.5rem',
-      pagination: false,
+      gap: '2.5rem',
+      pagination: true,
       arrows: true,
       autoplay: false,
       breakpoints: {
-        1024: { perPage: 3 },
-        768:  { perPage: 2 },
-        480:  { perPage: 1 },
+        1100: { perPage: 3, gap: '2rem' },
+        760:  { perPage: 2, gap: '1.25rem' },
+        460:  { perPage: 1, padding: '2.5rem' },
       },
     }).mount();
   }
 
-  // ===== Executive Board — bio overlay =====
-  // Hover reveals the bio on desktop (pure CSS, see style.css). Since
-  // there's no hover on touch devices, tapping a photo toggles the
-  // same overlay via this .is-open class, and tapping a different
-  // card closes whichever one was open.
-  document.querySelectorAll('.exec-card__photo-wrap').forEach((wrap) => {
-    wrap.addEventListener('click', () => {
-      const alreadyOpen = wrap.classList.contains('is-open');
-      document.querySelectorAll('.exec-card__photo-wrap.is-open').forEach((open) => {
-        open.classList.remove('is-open');
-      });
-      if (!alreadyOpen) wrap.classList.add('is-open');
+  // ===== Executive Board — bio popup =====
+  // One shared <dialog>, filled from whichever card was clicked.
+  // Each card can carry two optional attributes:
+  //   data-role-desc="What this position does"  -> makes the role expandable
+  //   data-linkedin="https://linkedin.com/in/..." -> shows a LinkedIn link
+  const modal = document.getElementById('bioModal');
+  if (modal) {
+    const nameEl = modal.querySelector('.bio-modal__name');
+    const roleBtn = modal.querySelector('.bio-modal__role');
+    const roleText = modal.querySelector('.bio-modal__role-text');
+    const roleDesc = modal.querySelector('.bio-modal__role-desc');
+    const bioEl = modal.querySelector('.bio-modal__bio');
+    const linkEl = modal.querySelector('.bio-modal__linkedin');
+    const photoEl = modal.querySelector('.bio-modal__photo img');
+
+    const openBio = (card) => {
+      const name = card.querySelector('.exec-card__name').textContent.trim();
+      nameEl.textContent = name;
+      // Personal photo from board_pics shows in the popup; the card itself shows the flyer
+      photoEl.src = card.dataset.photo || '';
+      photoEl.alt = name;
+      modal.classList.toggle('bio-modal--no-photo', !card.dataset.photo);
+      roleText.textContent = card.querySelector('.exec-card__position').textContent.trim();
+      bioEl.textContent = card.querySelector('.exec-card__bio').textContent.replace(/\s+/g, ' ').trim();
+
+      const desc = (card.dataset.roleDesc || '').trim();
+      roleDesc.textContent = desc;
+      roleDesc.hidden = true;
+      roleBtn.setAttribute('aria-expanded', 'false');
+      roleBtn.disabled = !desc;
+
+      const link = (card.dataset.linkedin || '').trim();
+      linkEl.hidden = !link;
+      if (link) linkEl.href = link;
+
+      modal.showModal();
+    };
+
+    document.querySelectorAll('.exec-card__photo-wrap').forEach((wrap) => {
+      wrap.addEventListener('click', () => openBio(wrap.closest('.exec-card')));
     });
-  });
+
+    roleBtn.addEventListener('click', () => {
+      const open = roleBtn.getAttribute('aria-expanded') === 'true';
+      roleBtn.setAttribute('aria-expanded', String(!open));
+      roleDesc.hidden = open;
+    });
+
+    modal.querySelector('.bio-modal__close').addEventListener('click', () => modal.close());
+    // Click on the dimmed backdrop closes it (Esc works natively)
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.close(); });
+  }
+  // ===== Event type popups (Academic / Social / Professional) =====
+  // Each .event-card holds its popup content: data-img for the picture and a
+  // hidden .event-card__details block with the description and a |-separated
+  // list of example events.
+  const eventModal = document.getElementById('eventModal');
+  if (eventModal) {
+    const img = eventModal.querySelector('.event-modal__photo img');
+    const label = eventModal.querySelector('.event-modal__label');
+    const title = eventModal.querySelector('.bio-modal__name');
+    const desc = eventModal.querySelector('.event-modal__desc');
+    const list = eventModal.querySelector('.event-modal__list');
+
+    document.querySelectorAll('.event-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        img.src = card.dataset.img || '';
+        img.alt = card.dataset.imgAlt || '';
+        label.textContent = card.querySelector('.event-card__label').textContent.trim();
+        title.textContent = card.querySelector('.event-card__title').textContent.trim();
+        const details = card.querySelector('.event-card__details');
+        desc.textContent = details.querySelector('[data-part="desc"]').textContent.replace(/\s+/g, ' ').trim();
+        list.innerHTML = '';
+        details.querySelector('[data-part="list"]').textContent.split('|').forEach((item) => {
+          const li = document.createElement('li');
+          li.textContent = item.trim();
+          list.appendChild(li);
+        });
+        eventModal.showModal();
+      });
+    });
+
+    eventModal.querySelector('.event-modal__close').addEventListener('click', () => eventModal.close());
+    eventModal.addEventListener('click', (e) => { if (e.target === eventModal) eventModal.close(); });
+  }
 });
 
 // ===== Newsletter form (placeholder handler — wire up to your provider) =====
