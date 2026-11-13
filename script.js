@@ -636,12 +636,7 @@ newsletterForm.addEventListener('submit', (e) => {
    A fixed seed keeps the layout the same on every visit. Re-run on resize. */
 (() => {
   const STAR = 'polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%)';
-  const DUCK = `<svg viewBox="0 0 64 54" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 30c0-4 3-6 7-5 4 1 9 3 15 3 3 0 4-2 4-5 0-8 6-14 14-14s13 6 13 13c0 4-2 7-5 9 6 2 9 6 8 11-2 7-12 10-26 10C14 52 4 44 4 30Z" fill="#f5ce45"/>
-    <path d="M57 19l7 2-7 4c-1-2-1-4 0-6Z" fill="#f39237"/>
-    <circle cx="48" cy="17" r="2.4" fill="#1a1240"/>
-    <path d="M18 35c6 5 16 6 23 1-2 6-8 9-14 8-5-1-8-4-9-9Z" fill="#e8b92e"/>
-  </svg>`;
+  const DUCK = '<img src="assets/Duck.png" alt="" draggable="false">';
 
   // small seeded random-number generator
   const rng = (seed) => () => {
