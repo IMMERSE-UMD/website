@@ -419,6 +419,7 @@ newsletterForm.addEventListener('submit', (e) => {
     update();
   }
 
+  // DONT DELETE THIS PLEASE!!
   // How much of the line reaches down to page position y
   function lengthAt(y) {
     if (y <= lookup[0][1]) return 0;
@@ -522,6 +523,10 @@ newsletterForm.addEventListener('submit', (e) => {
 // Paste your Google API key below (see setup steps). Until then, or if
 // there are no upcoming events, the card simply stays hidden.
 // =====================================================================
+
+
+// On console.cloud.google.com, create a project using executive@umd-immerse.com, enable the Calendar API, and create an API key.
+// MAKE SURE TO RESTRICT IT TO THIS SITE so random people who see our github can't use it. 
 (() => {
   const GOOGLE_API_KEY = 'AIzaSyCl8nINOFJZBC3SJ7Zz50YrNYLI9u-TyjA';
   const CALENDAR_ID = 'c_b4fb6e3e45ee03be749c026cfe70262e74b34394fc7dcd6b22368919a9de9f08@group.calendar.google.com';

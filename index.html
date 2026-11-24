@@ -67,18 +67,18 @@
       </div>
       <div class="hero__visual">
         <div class="hero__stage">
-        <div class="hero__frame">
-          <!-- The PNG shows first; script.js swaps in the SVG version and
+          <div class="hero__frame">
+            <!-- The PNG shows first; script.js swaps in the SVG version and
                draws it on page load (falls back to the PNG if the SVG can't load). -->
-          <img src="assets/primary_logo/IMMERSE Logo Fixed.png" alt="IMMERSE — Where Art Meets Tech"
-            class="hero__logo" data-svg="assets/primary_logo/IMMERSE Logo Fixed SVG.svg">
-        </div>
-        <!-- Event photos layered around the logo. Swap these for any
+            <img src="assets/primary_logo/IMMERSE Logo Fixed.png" alt="IMMERSE — Where Art Meets Tech"
+              class="hero__logo" data-svg="assets/primary_logo/IMMERSE Logo Fixed SVG.svg">
+          </div>
+          <!-- Event photos layered around the logo. Swap these for any
              favorite event shots (paths point at the About recap photos). -->
-        <img src="assets/event_photos/Bob_Ross_Social_Recap/2.png" alt="Members at the Bob Ross Social"
-          class="hero__photo hero__photo--a">
-        <img src="assets/event_photos/Bob_Ross_Social_Recap/5.png" alt="IMMERSE at the First Look Fair"
-          class="hero__photo hero__photo--b">
+          <img src="assets/event_photos/Bob_Ross_Social_Recap/2.png" alt="Members at the Bob Ross Social"
+            class="hero__photo hero__photo--a">
+          <img src="assets/event_photos/Bob_Ross_Social_Recap/5.png" alt="IMMERSE at the First Look Fair"
+            class="hero__photo hero__photo--b">
         </div>
         <!-- Compact "Next up" countdown. Filled by the same calendar script as
              the card in the Calendar section; hidden until an event loads. -->
@@ -195,12 +195,17 @@
         <div class="splide__track">
           <ul class="splide__list">
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/zoya.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/zoya-rahman-dmv/">
+              <!-- personal image -->
+              <div class="exec-card" data-photo="assets/board_pics/zoya.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/zoya-rahman-dmv/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/zoya.png" alt="Zoya Rahman board flyer" loading="lazy"></div>
+                  <!-- board reveal image -->
+                  <div class="exec-card__photo"><img src="assets/board_flyers/zoya.png" alt="Zoya Rahman board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
-                    <p>Hi, I'm Zoya, Co President of Feedback and founder of IMMERSE! I'm an Immersive Media Design student on the B.A.
+                    <p>Hi, I'm Zoya, Co President of Feedback and founder of IMMERSE! I'm an Immersive Media Design
+                      student on the B.A.
                       track, dual degreeing
                       with Computer Science.
                       I'm also IMD's Peer Advisor, so if you have any questions, come visit me at AVW
@@ -213,14 +218,18 @@
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/ari.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/ari-packer-9a512a2a7/">
+              <div class="exec-card" data-photo="assets/board_pics/ari.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/ari-packer-9a512a2a7/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/ari.png" alt="Ari Packer board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/ari.png" alt="Ari Packer board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
-                    <p>Hi! I am Ari - Co-President of Events for IMMERSE! I am an Immersive Media Design senior on the B.S
+                    <p>Hi! I am Ari - Co-President of Events for IMMERSE! I am an Immersive Media Design senior on the
+                      B.S
                       track, and also IMD's Student Lab Technician and CMNS Ambassador. I love 3D
-                      printing, photography, flying drones, and anything car related. If you ever have any club, academic,
+                      printing, photography, flying drones, and anything car related. If you ever have any club,
+                      academic,
                       or life questions, please feel free to reach out to me! </p>
                   </div>
                 </div>
@@ -229,12 +238,17 @@
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/mykha.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/mykhafloresca/">
+              <div class="exec-card" data-photo="assets/board_pics/mykha.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/mykhafloresca/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/mykha.png" alt="Mykha Lizette Floresca board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/mykha.png"
+                      alt="Mykha Lizette Floresca board flyer" loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
-                    <p>Hello! I’m Mykha Lizette Floresca (she/her) and I am a junior studying information science. I serve as IMMERSE’s Vice President of Admin Affairs where I focus on managing smooth internal operations. I hope that as someone not majoring in IMD, I can bring fresh perspectives and find ways to extend IMD’s influence outside of the department!</p>
+                    <p>Hello! I’m Mykha Lizette Floresca (she/her) and I am a junior studying information science. I
+                      serve as IMMERSE’s Vice President of Admin Affairs where I focus on managing smooth internal
+                      operations. I hope that as someone not majoring in IMD, I can bring fresh perspectives and find
+                      ways to extend IMD’s influence outside of the department!</p>
                   </div>
                 </div>
                 <p class="exec-card__name">Mykha Lizette Floresca</p>
@@ -242,9 +256,11 @@
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/disha.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/disha-ramesh-323624326/">
+              <div class="exec-card" data-photo="assets/board_pics/disha.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/disha-ramesh-323624326/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/disha.png" alt="Disha Ramesh board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/disha.png" alt="Disha Ramesh board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
                     <p>Hi! My name is Disha and I’m the Finance Director for Immerse this year! I’m a junior majoring in
@@ -257,9 +273,11 @@
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/renee.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/renee-jun-75080a225/">
+              <div class="exec-card" data-photo="assets/board_pics/renee.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/renee-jun-75080a225/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/renee.png" alt="Renee Jun board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/renee.png" alt="Renee Jun board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
                     <p>Hello all! I’m Renee and I’m an immersive media B.A and information science major! I am the
@@ -272,12 +290,15 @@
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/emily.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/emily-alt-870087332/">
+              <div class="exec-card" data-photo="assets/board_pics/emily.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/emily-alt-870087332/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/emily.png" alt="Emily Alt board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/emily.png" alt="Emily Alt board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
-                    <p>Hi! I’m Emily, the Professional Development Director for IMMERSE this year! I am a junior Immersive
+                    <p>Hi! I’m Emily, the Professional Development Director for IMMERSE this year! I am a junior
+                      Immersive
                       Media B.A. and Information Design B.A. double major! I am so excited to contribute to the
                       professional development of UMD’s design community. Look out for resume reviews, portfolio
                       workshops, LinkedIn workshops, and more!</p>
@@ -288,12 +309,15 @@
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/juliana.png" data-role-desc="" data-linkedin="https://www.linkedin.com/in/juliana-l-messinger/">
+              <div class="exec-card" data-photo="assets/board_pics/juliana.png" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/juliana-l-messinger/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/juliana.png" alt="Juliana Messinger board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/juliana.png"
+                      alt="Juliana Messinger board flyer" loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
-                    <p>Hi! I’m Juliana, an Immersive Media Design B.A. and Sustainability junior and this year's Social Director. I'll be planning fun social events to strengthen and enrich the IMMERSE community.</p>
+                    <p>Hi! I’m Juliana, an Immersive Media Design B.A. and Sustainability junior and this year's Social
+                      Director. I'll be planning fun social events to strengthen and enrich the IMMERSE community.</p>
                   </div>
                 </div>
                 <p class="exec-card__name">Juliana Messinger</p>
@@ -301,15 +325,20 @@
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/mia.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/smith-mia/">
+              <div class="exec-card" data-photo="assets/board_pics/mia.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/smith-mia/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/mia.png" alt="Mia Smith board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/mia.png" alt="Mia Smith board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
-                    <p>Hi! My name is Mia and I’m a senior pursuing a Bachelor’s of Arts in Immersive Media Design and minor in Digital Storytelling and Poetics. I am ever-curious about the intersections between digital art, storytelling, computer science, and marketing. I love strategizing immersive experiences where community can be fostered and visions are brought to life through the visual arts. 
-
-As the Members Director of IMMERSE, I am in charge of student feedback and creating challenges to increase engagement between members and the executive team. 
-</p>
+                    <p>Hi! My name is Mia and I’m a senior pursuing a Bachelor’s of Arts in Immersive Media Design and
+                      minor in Digital Storytelling and Poetics. I am ever-curious about the intersections between
+                      digital art, storytelling, computer science, and marketing. I love strategizing immersive
+                      experiences where community can be fostered and visions are brought to life through the visual
+                      arts. As the Members Director of IMMERSE, I am in charge of student feedback and creating
+                      challenges to increase engagement between members and the executive team.
+                    </p>
                   </div>
                 </div>
                 <p class="exec-card__name">Mia Smith</p>
@@ -317,13 +346,16 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/andrew.png" data-role-desc="" data-linkedin="https://www.linkedin.com/in/andrew-who/">
+              <div class="exec-card" data-photo="assets/board_pics/andrew.png" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/andrew-who/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/andrew.png" alt="Andrew Hu board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/andrew.png" alt="Andrew Hu board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
                     <p>Hello! I’m Andrew - The Student Engagement Director for IMMERSE! I’m an Immersive Media B.S. and
-                      Computer Science Major. I’m working to create more opportunities for students to get involved in the
+                      Computer Science Major. I’m working to create more opportunities for students to get involved in
+                      the
                       program through student work showcases!</p>
                   </div>
                 </div>
@@ -332,13 +364,14 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/selina.png" data-role-desc="" data-linkedin="https://www.linkedin.com/in/selina-li-8b2062274/">
+              <div class="exec-card" data-photo="assets/board_pics/selina.png" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/selina-li-8b2062274/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/selina.png" alt="Selina Li board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/selina.png" alt="Selina Li board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
                     <p>
-                      Selina
                       Hello! I’m Selina Li and I am a Junior Immersive Media Design B.S major. I am the Design Director
                       for Immerse and I’m excited for the opportunity to show off my fun graphics you might’ve seen on
                       Instagram or the TV’s! In my free time I enjoy playing video games, drawing, and being silly.
@@ -350,13 +383,16 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/stella.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/stella-li-umd/">
+              <div class="exec-card" data-photo="assets/board_pics/stella.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/stella-li-umd/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/stella.png" alt="Stella Li board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/stella.png" alt="Stella Li board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
                     <p>Hello! My name is Stella Li and I am a junior majoring in Immersive Media Design (B.S.). As
-                      IMMERSE’s Brand Director, my job is to engage you on our social media through creating funny videos,
+                      IMMERSE’s Brand Director, my job is to engage you on our social media through creating funny
+                      videos,
                       posting graphics, and writing silly captions! Check out our Instagram: @immerse.umd (please) </p>
                   </div>
                 </div>
@@ -365,12 +401,17 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/kelly.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/aizhong-he-96102a266/">
+              <div class="exec-card" data-photo="assets/board_pics/kelly.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/aizhong-he-96102a266/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/kelly.png" alt="Kelly He board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/kelly.png" alt="Kelly He board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
-                    <p>Hi! I'm Kelly, a senior majoring in IMD B.A. with a minor in General Business. I'm a multidisciplinary artist with a passion for painting, game design, and immersive experiences. As IMMERSE's Feedback Director, I hope to help create a welcoming and collaborative community where everyone can share their ideas, feel heard, and grow creatively!</p>
+                    <p>Hi! I'm Kelly, a senior majoring in IMD B.A. with a minor in General Business. I'm a
+                      multidisciplinary artist with a passion for painting, game design, and immersive experiences. As
+                      IMMERSE's Feedback Director, I hope to help create a welcoming and collaborative community where
+                      everyone can share their ideas, feel heard, and grow creatively!</p>
                   </div>
                 </div>
                 <p class="exec-card__name">Kelly He</p>
@@ -378,9 +419,11 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/kathy.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/kathy-ma-92b12b324/">
+              <div class="exec-card" data-photo="assets/board_pics/kathy.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/kathy-ma-92b12b324/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/kathy.png" alt="Kathy Ma board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/kathy.png" alt="Kathy Ma board flyer"
+                      loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
                     <p>Hello! My name is Kathy and I’m a sophomore majoring in Immersive Media Design B.A. I’m the
@@ -393,13 +436,16 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
               </div>
             </li>
             <li class="splide__slide">
-              <div class="exec-card" data-photo="assets/board_pics/olivia.jpg" data-role-desc="" data-linkedin="https://www.linkedin.com/in/olivia-ceres-barber-02346643b/">
+              <div class="exec-card" data-photo="assets/board_pics/olivia.jpg" data-role-desc=""
+                data-linkedin="https://www.linkedin.com/in/olivia-ceres-barber-02346643b/">
                 <div class="exec-card__photo-wrap">
-                  <div class="exec-card__photo"><img src="assets/board_flyers/olivia.png" alt="Olivia Ceres-Barber board flyer" loading="lazy"></div>
+                  <div class="exec-card__photo"><img src="assets/board_flyers/olivia.png"
+                      alt="Olivia Ceres-Barber board flyer" loading="lazy"></div>
                   <button type="button" class="exec-card__view">View Bio</button>
                   <div class="exec-card__bio">
                     <p>Hi! I’m Olivia, and I'm pursuing a B.S. in immersive media. As the Freshman Representative, I am
-                      dedicated to representing the wishes and needs of the Class of 2030 as best I can! In my free time,
+                      dedicated to representing the wishes and needs of the Class of 2030 as best I can! In my free
+                      time,
                       I enjoy making bracelets and doing nail art.</p>
                   </div>
                 </div>
@@ -418,25 +464,32 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
       <dialog class="bio-modal" id="bioModal" aria-labelledby="bioModalName">
         <div class="bio-modal__photo"><img src="" alt=""></div>
         <div class="bio-modal__content">
-        <div class="bio-modal__header">
-          <h3 class="bio-modal__name" id="bioModalName"></h3>
-          <button type="button" class="bio-modal__role" id="bioModalRole" aria-expanded="false" aria-controls="bioModalRoleDesc">
-            <span class="bio-modal__role-text"></span>
-            <svg class="bio-modal__chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <p class="bio-modal__role-desc" id="bioModalRoleDesc" hidden></p>
-        </div>
-        <div class="bio-modal__body">
-          <h4>About Me</h4>
-          <p class="bio-modal__bio"></p>
-          <a class="bio-modal__linkedin" target="_blank" rel="noopener noreferrer" hidden>
-            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>
-            LinkedIn
-          </a>
-        </div>
-        <div class="bio-modal__footer">
-          <button type="button" class="btn btn--outline bio-modal__close" autofocus>Close</button>
-        </div>
+          <div class="bio-modal__header">
+            <h3 class="bio-modal__name" id="bioModalName"></h3>
+            <button type="button" class="bio-modal__role" id="bioModalRole" aria-expanded="false"
+              aria-controls="bioModalRoleDesc">
+              <span class="bio-modal__role-text"></span>
+              <svg class="bio-modal__chevron" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+            <p class="bio-modal__role-desc" id="bioModalRoleDesc" hidden></p>
+          </div>
+          <div class="bio-modal__body">
+            <h4>About Me</h4>
+            <p class="bio-modal__bio"></p>
+            <a class="bio-modal__linkedin" target="_blank" rel="noopener noreferrer" hidden>
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                <path fill="currentColor"
+                  d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+              </svg>
+              LinkedIn
+            </a>
+          </div>
+          <div class="bio-modal__footer">
+            <button type="button" class="btn btn--outline bio-modal__close" autofocus>Close</button>
+          </div>
         </div>
       </dialog>
     </div>
@@ -492,37 +545,43 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
          data-img for its picture and the hidden .event-card__details block
          for its text, so edit those to change what the popup says. -->
     <div class="event-cards">
-      <button type="button" class="event-card event-card--academic"
-        data-img="assets/event_flyers/2.png" data-img-alt="Photogrammetry workshop flyer">
+      <button type="button" class="event-card event-card--academic" data-img="assets/event_flyers/2.png"
+        data-img-alt="Photogrammetry workshop flyer">
         <span class="event-card__label">Explore &amp; Create</span>
         <span class="event-card__title">Academic</span>
-        <span class="event-card__text">Hands-on workshops and talks on the tools and research behind immersive media.</span>
+        <span class="event-card__text">Hands-on workshops and talks on the tools and research behind immersive
+          media.</span>
         <span class="event-card__more">Learn more</span>
         <span class="event-card__details" hidden>
           <span data-part="desc">Our academic events are about building real skills and staying curious. We host
-            hands-on workshops once a month, with help from our department's faculty, staff, and even club members!</span>
-          <span data-part="list">Unity / Blender / Photogrammetry / Sound Design Workshops|Research panels and guest lectures from faculty|Lab showcases / demos|Collab Workshops with other organizations</span>
+            hands-on workshops once a month, with help from our department's faculty, staff, and even club
+            members!</span>
+          <span data-part="list">Unity / Blender / Photogrammetry / Sound Design Workshops|Research panels and guest
+            lectures from faculty|Lab showcases / demos|Collab Workshops with other organizations</span>
         </span>
       </button>
 
-      <button type="button" class="event-card event-card--social"
-        data-img="assets/event_flyers/6.png" data-img-alt="Design a Duck Social">
+      <button type="button" class="event-card event-card--social" data-img="assets/event_flyers/6.png"
+        data-img-alt="Design a Duck Social">
         <span class="event-card__label">Connect</span>
         <span class="event-card__title">Social</span>
-        <span class="event-card__text">Casual events to meet other students across the major, the club, and campus.</span>
+        <span class="event-card__text">Casual events to meet other students across the major, the club, and
+          campus.</span>
         <span class="event-card__more">Learn more</span>
         <span class="event-card__details" hidden>
           <span data-part="desc">Our socials are about community and well-being. We host one every month so
             members can unwind, make things together, and meet people outside of class.</span>
-          <span data-part="list">Welcome socials|Game nights / casual hangouts|Mental health / wellness events|Cross-discipline / club / major events</span>
+          <span data-part="list">Welcome socials|Game nights / casual hangouts|Mental health / wellness
+            events|Cross-discipline / club / major events</span>
         </span>
       </button>
 
-      <button type="button" class="event-card event-card--pro"
-        data-img="assets/event_flyers/3.png" data-img-alt="Portfolio workshop flyer">
+      <button type="button" class="event-card event-card--pro" data-img="assets/event_flyers/3.png"
+        data-img-alt="Portfolio workshop flyer">
         <span class="event-card__label">Advance</span>
         <span class="event-card__title">Professional Development</span>
-        <span class="event-card__text">Career-focused events to help you build your portfolio and connect with the industry.</span>
+        <span class="event-card__text">Career-focused events to help you build your portfolio and connect with the
+          industry.</span>
         <span class="event-card__more">Learn more</span>
         <span class="event-card__details" hidden>
           <span data-part="desc">Our professional events are about getting you ready for what comes after
@@ -596,7 +655,8 @@ As the Members Director of IMMERSE, I am in charge of student feedback and creat
     <div class="contact__inner">
       <!-- Group photo. Replace assets/board_pics/group_photo.jpg to change it. -->
       <figure class="contact__photo">
-        <img src="assets/board_pics/group_photo.jpg" alt="IMMERSE executive board members at the club's table" loading="lazy">
+        <img src="assets/board_pics/group_photo.jpg" alt="IMMERSE executive board members at the club's table"
+          loading="lazy">
       </figure>
 
       <div class="contact__copy">
